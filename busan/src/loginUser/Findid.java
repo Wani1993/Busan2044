@@ -43,17 +43,17 @@ public class Findid extends JFrame {
 		username.setBounds(17, 61, 57, 15);
 		pnl.add(username);
 
-		JLabel userbirthDay = new JLabel("주민번호");
-		userbirthDay.setBounds(17, 142, 57, 15);
-		pnl.add(userbirthDay);
+		JLabel phoneNum = new JLabel("전화번호");
+		phoneNum.setBounds(17, 142, 57, 15);
+		pnl.add(phoneNum);
 
 		JTextField usernameF = new JTextField(10);
 		usernameF.setBounds(110, 55, 152, 28);
 		pnl.add(usernameF);
 
-		JTextField userbirthDayF = new JTextField(10);
-		userbirthDayF.setBounds(110, 136, 152, 28);
-		pnl.add(userbirthDayF);
+		JTextField phoneNumF = new JTextField(10);
+		phoneNumF.setBounds(110, 136, 152, 28);
+		pnl.add(phoneNumF);
 
 		btn.addActionListener(new ActionListener() {
 
@@ -74,16 +74,16 @@ public class Findid extends JFrame {
 					while (rs.next()) {
 						String userid = rs.getString("id");
 						String name = rs.getString("name");
-						String birthDay = rs.getString("birthDay");
-						if (usernameF.getText().equals(name) && userbirthDayF.getText().equals(birthDay)) {
+						String phoneNum = rs.getString("phoneNum");
+						if (usernameF.getText().equals(name) && phoneNumF.getText().equals(phoneNum)) {
 							JOptionPane.showMessageDialog(Findid.this, "아이디는 " + userid);
 							b = true;
 							setVisible(false);
 						} else {
 
-							if (usernameF.getText().equals("") || userbirthDayF.getText().equals("")
-									|| !usernameF.getText().equals(name) || !userbirthDayF.getText().equals(birthDay)) {
-								a = "이름 또는 주민번호를 확인하세요.";
+							if (usernameF.getText().equals("") || phoneNumF.getText().equals("")
+									|| !usernameF.getText().equals(name) || !phoneNumF.getText().equals(phoneNum)) {
+								a = "이름 또는 전화번호를 확인하세요.";
 
 							}
 						}

@@ -21,7 +21,6 @@ import kr.co.greenart.dbutil.BusanUtil;
 
 public class Findpw extends JFrame {
 
-
 	private boolean b = false;
 
 	public Findpw() {
@@ -52,17 +51,17 @@ public class Findpw extends JFrame {
 		username.setBounds(17, 96, 57, 15);
 		pnl.add(username);
 
-		JLabel userbirthDay = new JLabel("주민번호");
-		userbirthDay.setBounds(17, 149, 57, 15);
-		pnl.add(userbirthDay);
+		JLabel userPhone = new JLabel("전화번호");
+		userPhone.setBounds(17, 149, 57, 15);
+		pnl.add(userPhone);
 
 		JTextField usernameF = new JTextField(10);
 		usernameF.setBounds(110, 93, 152, 28);
 		pnl.add(usernameF);
 
-		JTextField userbirthDayF = new JTextField(10);
-		userbirthDayF.setBounds(110, 146, 152, 28);
-		pnl.add(userbirthDayF);
+		JTextField userPhoneF = new JTextField(10);
+		userPhoneF.setBounds(110, 146, 152, 28);
+		pnl.add(userPhoneF);
 
 		btn.addActionListener(new ActionListener() {
 
@@ -79,31 +78,89 @@ public class Findpw extends JFrame {
 					stmt = conn.createStatement();
 					rs = stmt.executeQuery(query);
 					String a = "";
+					String a1 = "";
+					String a2 = "";
+					int count = 0;
 
 					while (rs.next()) {
 						String userid = rs.getString("id");
 						String userpassword = rs.getString("password");
 						String name = rs.getString("name");
-						String birthDay = rs.getString("birthDay");
+						String phoneNum = rs.getString("phoneNum");
+
 						if (id.getText().equals(userid) && usernameF.getText().equals(name)
-								&& userbirthDayF.getText().equals(birthDay)) {
+								&& userPhoneF.getText().equals(phoneNum)) {
 							JOptionPane.showMessageDialog(Findpw.this, "비밀번호는 " + userpassword);
 							b = true;
 							setVisible(false);
 						} else {
 
-							if (id.getText().equals("") || usernameF.getText().equals("")
-									|| userbirthDayF.getText().equals("") || !id.getText().equals(userid)
-									|| !usernameF.getText().equals(name) || !userbirthDayF.getText().equals(birthDay)) {
-								a = "아이디와 이름 또는 주민번호를 확인하세요.";
+//							if (!(id.getText().equals(userid))) {
+//								a = "아이디를 확인하세요\n";
+//							}
+//							if (!(usernameF.getText().equals(name))) {
+//								a1 = "이름을 확인하세요\n";
+//							}
+//							if (!(userPhoneF.getText().equals(phoneNum))) {
+//								a2 = "생년월일을 확인하세요\n";
+//							}
+
+							if (!id.getText().equals(userid) || !usernameF.getText().equals(name)
+									|| !userPhoneF.getText().equals(phoneNum)) {
+								if (id.getText().equals("") || usernameF.getText().equals("") || (userPhoneF.getText().equals(""))) {
+									a = "빈칸을 채워주세요.";
+									a1 = "";
+									a2 = "";
+								} 
+										
+								if(!id.getText().equals(userid)) {
+									count++;
+								}
+								if(!usernameF.getText().equals(name)) {
+									count++;
+								}
+								if(!userPhoneF.getText().equals(phoneNum)) {
+									count++;
+								}
+									
+
+								if ( (!id.getText().equals(userid)
+										&& (usernameF.getText().equals(name) && userPhoneF.getText().equals(phoneNum)))
+										|| (!id.getText().equals(userid) && userPhoneF.getText().equals(phoneNum))
+										|| (!id.getText().equals(userid) && usernameF.getText().equals(name)) ) {
+									a = "아이디를 확인하세요\n";
+									
+								}
+								if ( (!usernameF.getText().equals(name)
+										&& (id.getText().equals(userid) && userPhoneF.getText().equals(phoneNum)))
+										|| (!usernameF.getText().equals(name) && userPhoneF.getText().equals(phoneNum))
+										|| (!usernameF.getText().equals(name) && id.getText().equals(userid)) ) {
+									a1 = "이름을 확인하세요\n";
+									
+								} 
+								if ( (!userPhoneF.getText().equals(phoneNum)
+										&& (id.getText().equals(userid) && usernameF.getText().equals(name)))
+										|| (!userPhoneF.getText().equals(phoneNum) && id.getText().equals(userid))
+										|| (!userPhoneF.getText().equals(phoneNum) && usernameF.getText().equals(name)) ) {
+									a2 = "전화번호를 확인하세요\n";
+									
+								} 
+								
+								if(count == 3) {
+									a = "개인정보를 확인해주세요";
+									a1 = "";
+									a2 = "";
+								}
+								
 
 							}
+
 						}
+
 					}
 					if (!b) {
-						JOptionPane.showMessageDialog(Findpw.this, a);
-						
-					}
+						JOptionPane.showMessageDialog(Findpw.this, a + a1 + a2);
+					} 
 
 				} catch (SQLException e1) {
 					e1.printStackTrace();

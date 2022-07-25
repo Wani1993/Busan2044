@@ -12,8 +12,13 @@ import kr.co.greenart.dbutil.BusanUtil;
 
 public class Busanlogin {
 	private BusanUser user;
+	private List<BusanUser> list = new ArrayList<BusanUser>();
 	
 	
+	public List<BusanUser> getList() {
+		return list;
+	}
+
 	private BusanUser resultMapping(ResultSet rs) throws SQLException {
 		int userNum = rs.getInt("userNum");
 		String id = rs.getString("id");
@@ -22,8 +27,8 @@ public class Busanlogin {
 		return new BusanUser(userNum, id, password);
 	}
 
-	public int create(String id, String password, String name, String birthDay) throws SQLException {
-		String query = "INSERT INTO login_info (id, password, name, birthDay) VALUES (?, ?, ?, ?)";
+	public int create(String id, String password, String name, String birthDay, String phoneNum) throws SQLException {
+		String query = "INSERT INTO login_info (id, password, name, birthDay, phoneNum) VALUES (?, ?, ?, ?, ?)";
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -35,6 +40,7 @@ public class Busanlogin {
 			pstmt.setString(2, password);
 			pstmt.setString(3, name);
 			pstmt.setString(4, birthDay);
+			pstmt.setString(5, phoneNum);
 
 			return pstmt.executeUpdate();
 
@@ -51,7 +57,7 @@ public class Busanlogin {
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		List<BusanUser> list = new ArrayList<BusanUser>();
+		
 
 		try {
 			conn = BusanUtil.getConnection();
@@ -64,7 +70,8 @@ public class Busanlogin {
 				String password = rs.getString("password");
 				String name = rs.getString("name");
 				String birthDay = rs.getString("birthDay");
-				user = new BusanUser(userNum, id, password, name, birthDay);
+				String phoneNum = rs.getString("phoneNum");
+				user = new BusanUser(userNum, id, password, name, birthDay, phoneNum);
 				list.add(user);
 			}
 
@@ -84,7 +91,7 @@ public class Busanlogin {
 		PreparedStatement pstmt = null;
 		
 
-		
+	
 
 		try {
 			conn = BusanUtil.getConnection();

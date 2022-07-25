@@ -6,6 +6,7 @@ public class BusanUser {
 	private String password;
 	private String name;
 	private String birthDay;
+	private String phoneNum;
 	
 	public BusanUser(int userNum, String id, String password) {
 		super();
@@ -20,21 +21,23 @@ public class BusanUser {
 		this.password = password;
 	}
 
-	public BusanUser(String id, String password, String name, String birthDay) {
+	public BusanUser(String id, String password, String name, String birthDay, String phoneNum) {
 		super();
 		this.id = id;
 		this.password = password;
 		this.name = name;
 		this.birthDay = birthDay;
+		this.phoneNum = phoneNum;
 	}
 
-	public BusanUser(int userNum, String id, String password, String name, String birthDay) {
+	public BusanUser(int userNum, String id, String password, String name, String birthDay, String phoneNum) {
 		super();
 		this.userNum = userNum;
 		this.id = id;
 		this.password = password;
 		this.name = name;
 		this.birthDay = birthDay;
+		this.phoneNum = phoneNum;
 	}
 
 	public int getUserNum() {
@@ -77,12 +80,21 @@ public class BusanUser {
 		this.birthDay = birthDay;
 	}
 
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+
 	@Override
 	public String toString() {
 		return "BusanUser [userNum=" + userNum + ", id=" + id + ", password=" + password + ", name=" + name
-				+ ", birthDay=" + birthDay + "]";
+				+ ", birthDay=" + birthDay + ", phoneNum=" + phoneNum + "]";
 	}
 
+	
 
 	
 }
