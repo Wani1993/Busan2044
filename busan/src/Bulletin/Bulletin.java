@@ -59,7 +59,7 @@ public class Bulletin {
 		contentPane.add(pnl);
 		JPanel mainPnl = new JPanel();
 		JTextArea text = new JTextArea();
-		text.setPreferredSize(new Dimension(800, 600));
+		text.setPreferredSize(new Dimension(800, 400));
 		frame.add(mainPnl, BorderLayout.SOUTH);
 		mainPnl.add(text);
 		

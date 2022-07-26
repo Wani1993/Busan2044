@@ -1,102 +1,186 @@
 package Bulletin;
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
 
-public class test
-{
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+
+public class test extends JFrame {
+	private BulletinInfo blt;
+	private JPanel[] pnlC = new JPanel[20];
+	private JLabel[] lblC = new JLabel[20];
+	private JLabel[] lblD = new JLabel[20];
+	private int i = 5;
 	
+
+
+	public test() {
+		BulletinBord BB = new BulletinBord();
+		
+		
+		setLocationRelativeTo(null);
+		setVisible(true);
+		setSize(1000, 800);
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null);
+		
+		JPanel starPnl = new JPanel();
+		starPnl.setBounds(12, 10, 970, 212);
+		starPnl.setBackground(Color.pink);
+		getContentPane().add(starPnl);
+		starPnl.setLayout(null);
+		
+		JLabel five = new JLabel("5점");
+		five.setBounds(230, 25, 57, 15);
+		starPnl.add(five);
+		JLabel fiveG = new JLabel("■■■■■■■■■■■■■■■■■■");
+		fiveG.setBounds(273, 25, 674, 15);
+		starPnl.add(fiveG);
+		
+		JLabel four = new JLabel("4점");
+		four.setBounds(230, 60, 57, 15);
+		starPnl.add(four);
+		JLabel fourG = new JLabel("■■■■■■■■■■");
+		fourG.setBounds(273, 60, 674, 15);
+		starPnl.add(fourG);
+		
+		JLabel three = new JLabel("3점");
+		three.setBounds(230, 95, 57, 15);
+		starPnl.add(three);
+		JLabel threeG = new JLabel("■■■■■■");
+		threeG.setBounds(273, 95, 674, 15);
+		starPnl.add(threeG);
+		
+		JLabel two = new JLabel("2점");
+		two.setBounds(230, 130, 57, 15);
+		starPnl.add(two);
+		JLabel twoG = new JLabel("■■■■■■");
+		twoG.setBounds(273, 130, 674, 15);
+		starPnl.add(twoG);
+		
+		JLabel one = new JLabel("1점");
+		one.setBounds(230, 165, 57, 15);
+		starPnl.add(one);
+		JLabel oneG = new JLabel("■■");
+		oneG.setBounds(273, 165, 674, 15);
+		starPnl.add(oneG);
+		
+		JLabel img = new JLabel("이미지");
+		img.setBounds(34, 24, 164, 159);
+		starPnl.add(img);
+		
+		
+		
+		JPanel mainPnl = new JPanel();
+		mainPnl.setBounds(12, 232, 970, 470);
+		getContentPane().add(mainPnl);
+		mainPnl.setLayout(null);
+		
+//		JScrollPane scroll = new JScrollPane(mainPnl);
+//		scroll.setViewportView(mainPnl);
+//		mainPnl.add(scroll);
+		
+		JPanel pnlComment = new JPanel();
+		pnlComment.setBounds(12, 712, 970, 49);
+		getContentPane().add(pnlComment);
+		pnlComment.setLayout(null);
+		
+		JTextField textField = new JTextField();
+		textField.setBounds(12, 10, 846, 29);
+		textField.setColumns(10);
+		pnlComment.add(textField);
+		
+		JButton upload = new JButton("등록하기");
+		upload.setBackground(Color.WHITE);
+		upload.setBounds(868, 10, 90, 29);
+		pnlComment.add(upload);
+		
+		BoxLayout box = new BoxLayout(mainPnl, BoxLayout.Y_AXIS);
+		mainPnl.setLayout(box);
+		
 	
-    public static void main(String args[])
-    {
-        JFrame frame = new JFrame("Program Language School");
-        frame.setLocation(500,200);
-        frame.setPreferredSize(new Dimension(400,350));
-        Container contentPane = frame.getContentPane();
+		
+		for (int i = 0; i < pnlC.length; i++) {
+			pnlC[i] = new JPanel();
+//			pnlC[i].setBounds(0, 0, 100, 70);
+			pnlC[i].setBackground(Color.white);
+			mainPnl.add(pnlC[i]);
+			lblC[i] = new JLabel("wani");
+			lblD[i] = new JLabel("이지합니다 이지해요");
+			pnlC[i].add(lblC[i]);
+			pnlC[i].add(lblD[i]);			
+		}
+//		lblC[0] = new JLabel("뒤집어놓으셨다~~!!!!!");
+//		lblC[1] = new JLabel("뒤집어놓으셨다~~!!!!!");
+//		lblC[2] = new JLabel("뒤집어놓으셨다~~!!!!!");
+//		lblC[3] = new JLabel("뒤집어놓으셨다~~!!!!!");
+//		lblC[4] = new JLabel("뒤집어놓으셨다~~!!!!!");
+//		mainPnl.add(lblC[0]);
+//		mainPnl.add(lblC[1]);
+//		mainPnl.add(lblC[2]);
+//		mainPnl.add(lblC[3]);
+//		mainPnl.add(lblC[4]);
+//		lblC[0].setText("wani");
+//		lblD[0].setText("너무이지해서 노잼");
+//		lblC[1].setText("이것이 맞는것이냐");
+//		lblD[1].setText("아무렴 맞는것이지");
+//		lblC[2].setText("이것이 맞는것이냐");
+//		lblD[2].setText("아무렴 맞는것이지");
+//		lblC[3].setText("이것이 맞는것이냐");
+//		lblD[3].setText("아무렴 맞는것이지");
+		
+		
+		upload.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				pnlC[i] = new JPanel();
+//				lblC[i] = new JLabel();
+//				pnlC[i].setBounds(0, 0, 940, 70);
+//				pnlC[i].setBackground(Color.black);
+//				mainPnl.add(pnlC[i]);
+//				pnlC[i].add(lblC[i]);
+//				lblC[i].setLayout(null);
+				lblD[i].setText(textField.getText());
+				i += 1;
+//				BB.BulletCreate(BB.BulletInputId(i), BB.BulletInputName(i), textField.getText(), 5);
+			}
+		});
+		
+		
+				
+		
+	}
 
-        DrawingPanel drawingPanel = new DrawingPanel();
-        contentPane.add(drawingPanel, BorderLayout.CENTER);
-        //그래프를 그릴 패널
-
-        JPanel controlPanel = new JPanel();
-        JTextField text1 = new JTextField(3);
-        JTextField text2 = new JTextField(3);
-        JTextField text3 = new JTextField(3);
-        JButton button = new JButton("Show");
-        controlPanel.add(new JLabel("Java"));
-        controlPanel.add(text1);
-        controlPanel.add(new JLabel("Python"));
-        controlPanel.add(text2);
-        controlPanel.add(new JLabel("C#"));
-        controlPanel.add(text3);
-        controlPanel.add(button);
-        contentPane.add(controlPanel, BorderLayout.SOUTH);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        button.addActionListener(new DrawActionListener(text1,text2,text3,drawingPanel));
-        //"그래프 그리기" 버튼을 눌렀을때 작동 할 리스터등록
-        frame.pack();
-        frame.setVisible(true);
-    }
+//	public void paint(Graphics g) {
+////        g.clearRect(0,0,getWidth(),getHeight());
+//		g.setColor(Color.GREEN);
+//		g.fillRect(250, 50, 300, 10);
+//		g.fillRect(250, 65, 250, 10);
+//		g.fillRect(250, 80, 200, 10);
+//		g.fillRect(250, 95, 150, 10);
+//		g.fillRect(250, 110, 100, 10);
+//		g.dispose();
+//	}
+	
+	public static void main(String[] args) {
+		new test().setVisible(true);
+	}
 }
-
-class DrawingPanel extends JPanel
-{
-    int score_java, score_python, score_cs;
-    public void paint(Graphics g){
-        g.clearRect(0,0,getWidth(),getHeight());
-        g.drawLine(50,250,300,250);
-        g.drawString("■■■■■■■■■■■■■■■■■■■■■■■", 100, 100);
-//        g.draw
-        for(int cnt = 1 ;cnt<11;cnt++)
-        {
-            g.drawString(cnt *10 +"",25,255-20*cnt);
-            g.drawLine(50, 250-20*cnt, 350,250-20*cnt);
-        }
-        g.drawLine(50,20,50,200);
-        g.drawString("Java",100,270);
-        g.drawString("Python",200,270);
-        g.drawString("C#",300,270);
-        g.setColor(Color.BLUE);
-        if (score_java>0)
-            g.fillRect(score_java*2,110,250-score_java*2,10);
-        if(score_python>0)
-            g.fillRect(250-score_python*2,210,score_python*2,10);
-        if(score_cs>0)
-            g.fillRect(310,250-score_cs*2,10,score_cs*2);
-    }
-    void setScores(int score_java, int score_python, int score_cs)
-    {
-        this.score_java=score_java;
-        this.score_python=score_python;
-        this.score_cs=score_cs;
-    }
-}
-
-//버튼 눌렀을때 동작하는 리스너
-class DrawActionListener implements ActionListener
-{
-    JTextField text1,text2,text3;
-    DrawingPanel drawingPanel;
-    DrawActionListener(JTextField text1, JTextField text2, JTextField text3, DrawingPanel drawingPanel)
-    {
-        this.text1=text1;
-        this.text2=text2;
-        this.text3=text3;
-        this.drawingPanel = drawingPanel;
-    }
-    public void actionPerformed(ActionEvent e)
-    {
-        try
-        {
-            int korean = Integer.parseInt(text1.getText());
-            int english = Integer.parseInt(text2.getText());
-            int math = Integer.parseInt(text3.getText());
-            drawingPanel.setScores(korean, english, math);
-            drawingPanel.repaint();
-        }
-        catch (NumberFormatException nfe){
-            JOptionPane.showMessageDialog(drawingPanel,"잘못된 숫자 입력입니다","에러메시지",JOptionPane.ERROR_MESSAGE);
-        }
-    }
-}
-//그래프를 그리는 패널 클래스

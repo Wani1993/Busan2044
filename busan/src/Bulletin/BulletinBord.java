@@ -25,14 +25,32 @@ public class BulletinBord {
 
 		return a;
 	}
+	
+	public String BulletInputName(int userNum) {
+		String a = null;
+		try (Connection conn = BusanUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Busan.login_info");
+				ResultSet rs = pstmt.executeQuery();) {
 
-	public int BulletCreate(String userId, String achv, String text, int star) {
+			while (rs.next()) {
+				if(userNum == rs.getInt("userNum")) {
+					a = rs.getString("name");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return a;
+	}
+
+	public int BulletCreate(String userId, String username, String text, int star) {
 		try (Connection conn = BusanUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(
-						"INSERT INTO Busan.bulletinBord (userId, achv, text, star) values (?, ?, ?, ?)");) {
+						"INSERT INTO Busan.bulletinBord (userId, username, text, star) values (?, ?, ?, ?)");) {
 
 			pstmt.setString(1, userId);
-			pstmt.setString(2, achv);
+			pstmt.setString(2, username);
 			pstmt.setString(3, text);
 			pstmt.setInt(4, star);
 
@@ -46,7 +64,7 @@ public class BulletinBord {
 	public static void main(String[] args) {
 		BulletinBord bb = new BulletinBord();
 
-		int result = bb.BulletCreate(bb.BulletInputId(5), "개발자는  웁니다", "뒤집어놓으셨다~~!!!!!", 5);
+		int result = bb.BulletCreate(bb.BulletInputId(14), bb.BulletInputName(14), "뒤집어놓으셨다~~!!!!!", 5);
 		System.out.println(result);
 	}
 }
