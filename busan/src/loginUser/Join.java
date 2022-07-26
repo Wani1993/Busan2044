@@ -1,7 +1,10 @@
 package loginUser;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -42,12 +46,14 @@ public class Join extends JFrame {
 		
 		JPanel pnl = new JPanel();
 		JTextField id = new JTextField(10);
-		id.setBounds(120, 25, 152, 28);
+		// TODO 폰트
+		id.setFont(new Font("HY목각파임B", Font.BOLD, 12));
+		id.setBounds(125, 25, 145, 28);
 		JPasswordField ps = new JPasswordField(10);
-		ps.setBounds(120, 70, 152, 30);
+		ps.setBounds(125, 70, 145, 30);
 
 		JPasswordField psre = new JPasswordField();
-		psre.setBounds(120, 115, 152, 28);
+		psre.setBounds(125, 115, 145, 28);
 		pnl.add(psre);
 		psre.setColumns(10);
 
@@ -57,15 +63,21 @@ public class Join extends JFrame {
 		pnl.add(ps);
 
 		JButton btn = new JButton("회원가입");
+		// TODO 폰트
+		btn.setFont(new Font("HY목각파임B", Font.BOLD, 12));
 		btn.setBounds(90, 302, 126, 31);
 		btn.setBackground(Color.white);
 		pnl.add(btn);
 
-		JLabel idlbl = new JLabel("아이디");
-		idlbl.setBounds(27, 32, 57, 15);
+		JLabel idlbl = new JLabel("아이디(닉네임)");
+		// TODO 폰트
+		idlbl.setFont(new Font("HY목각파임B", Font.BOLD, 11));
+		idlbl.setBounds(27, 32, 90, 15);
 		pnl.add(idlbl);
 
 		JLabel pslbl = new JLabel("비밀번호");
+		// TODO 폰트
+		pslbl.setFont(new Font("HY목각파임B", Font.BOLD, 12));
 		pslbl.setBounds(27, 77, 57, 15);
 		pnl.add(pslbl);
 
@@ -74,39 +86,68 @@ public class Join extends JFrame {
 		pnl.setBackground(Color.LIGHT_GRAY);
 
 		JLabel psrelbl = new JLabel("비밀번호 확인");
+		// TODO 폰트
+		psrelbl.setFont(new Font("HY목각파임B", Font.BOLD, 12));
 		psrelbl.setBounds(27, 122, 84, 15);
 		pnl.add(psrelbl);
 		
 		JLabel username = new JLabel("이름");
+		// TODO 폰트
+		username.setFont(new Font("HY목각파임B", Font.BOLD, 12));
 		username.setBounds(27, 167, 57, 15);
 		pnl.add(username);
 		
 		JLabel userbirthDay = new JLabel("생년월일");
+		// TODO 폰트
+		userbirthDay.setFont(new Font("HY목각파임B", Font.BOLD, 12));
 		userbirthDay.setBounds(27, 212, 57, 15);
 		pnl.add(userbirthDay);
 		
 		JTextField usernameF = new JTextField();
-		usernameF.setBounds(120, 160, 152, 28);
+		// TODO 폰트
+		usernameF.setFont(new Font("HY목각파임B", Font.BOLD, 12));
+		usernameF.setBounds(125, 160, 145, 28);
 		pnl.add(usernameF);
 		usernameF.setColumns(10);
 		
 		JTextField userbirthDayF = new JTextField(10);
-		userbirthDayF.setBounds(120, 205, 152, 28);
+		// TODO 폰트
+		userbirthDayF.setFont(new Font("HY목각파임B", Font.BOLD, 12));
+		userbirthDayF.setBounds(125, 205, 145, 28);
 		pnl.add(userbirthDayF);
 		
 		JLabel userPhone = new JLabel("전화번호");
+		// TODO 폰트
+		userPhone.setFont(new Font("HY목각파임B", Font.BOLD, 12));
 		userPhone.setBounds(27, 257, 57, 15);
 		pnl.add(userPhone);
 		
 		JTextField userPhoneF = new JTextField(10);
-		userPhoneF.setBounds(120, 250, 152, 28);
+		// TODO 폰트
+		userPhoneF.setFont(new Font("HY목각파임B", Font.BOLD, 12));
+		userPhoneF.setBounds(125, 250, 145, 28);
 		pnl.add(userPhoneF);
+		
+		userPhoneF.setText("010-0000-0000");
+		
+		userPhoneF.addFocusListener(new FocusAdapter() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				userPhoneF.setText("");
+				super.focusGained(e);
+			}
+			
+		});
+		
+		Pattern pattern = Pattern.compile("[ !@#$%^&*(),.?\":{}|<>]");
 		
 
 		setLocationRelativeTo(null); // 창이 가운데에서 출력된다
 		setResizable(false);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			
 				if (id.getText().length() >= 4 && id.getText().length() <= 12 && ps.getText().length() >= 4
 						&& ps.getText().length() <= 12) {
 
@@ -138,6 +179,13 @@ public class Join extends JFrame {
 					
 					if(map.containsKey(id.getText())) {
 						JOptionPane.showMessageDialog(Join.this, "이미 가입된 아이디입니다");
+					} else if (!id.getText().matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*")) {
+						
+							JOptionPane.showMessageDialog(Join.this, "아이디에는 특수문자를 사용할수없습니다.");
+							id.setText("");
+					} else if (!usernameF.getText().matches("[ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*")) {
+						JOptionPane.showMessageDialog(Join.this, "이름에는 영어를 사용할수없습니다.");
+						usernameF.setText("");
 					} else {
 						if (ps.getText().equals(psre.getText()) && !ps.getText().equals("") && !psre.getText().equals("") && 
 								!usernameF.getText().equals("") && !userbirthDayF.getText().equals("") && userbirthDayF.getText().length() == 6 
@@ -157,7 +205,7 @@ public class Join extends JFrame {
 								psre.setText("");
 								usernameF.setText("");
 								userbirthDayF.setText("");
-								userPhoneF.setText("");
+								userPhoneF.setText("010-0000-0000");
 								//System.out.println("되고있니");
 								setVisible(false);
 								
@@ -174,6 +222,7 @@ public class Join extends JFrame {
 						}}
 
 				} else {
+					
 					if (id.getText().length() < 4) {
 						JOptionPane.showMessageDialog(Join.this, "아이디가 너무 짧습니다.");
 					} else if (id.getText().length() > 12) {
@@ -185,15 +234,21 @@ public class Join extends JFrame {
 					}
 				}
 			}
+			
 		});
 
+		
+		
 	}
+	
 
 	public static void main(String[] args) {
 		Join l = new Join();
 		l.setVisible(true);
+		
 		try {
 			System.out.println(l.user.read());
+//			System.out.println(l.user.matchId("magic22x"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

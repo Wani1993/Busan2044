@@ -3,6 +3,8 @@ package loginUser;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import kr.co.greenart.dbutil.BusanUtil;
+import java.awt.Font;
 
 public class Findid extends JFrame {
 
@@ -31,6 +34,8 @@ public class Findid extends JFrame {
 		
 
 		JButton btn = new JButton("아이디찾기");
+		// TODO 폰트
+		btn.setFont(new Font("HY목각파임B", Font.BOLD, 14));
 		btn.setBounds(80, 205, 126, 31);
 		btn.setBackground(Color.white);
 		pnl.add(btn);
@@ -40,23 +45,42 @@ public class Findid extends JFrame {
 		pnl.setBackground(Color.LIGHT_GRAY);
 
 		JLabel username = new JLabel("이름");
-		username.setBounds(17, 61, 57, 15);
+		// TODO 폰트
+		username.setFont(new Font("HY목각파임B", Font.BOLD, 14));
+		username.setBounds(25, 61, 57, 15);
 		pnl.add(username);
 
 		JLabel phoneNum = new JLabel("전화번호");
-		phoneNum.setBounds(17, 142, 57, 15);
+		// TODO 폰트
+		phoneNum.setFont(new Font("HY목각파임B", Font.BOLD, 14));
+		phoneNum.setBounds(25, 142, 81, 15);
 		pnl.add(phoneNum);
 
 		JTextField usernameF = new JTextField(10);
+		// TODO 폰트
+		usernameF.setFont(new Font("HY목각파임B", Font.BOLD, 14));
 		usernameF.setBounds(110, 55, 152, 28);
 		pnl.add(usernameF);
 
 		JTextField phoneNumF = new JTextField(10);
+		// TODO 폰트
+		phoneNumF.setFont(new Font("HY목각파임B", Font.BOLD, 14));
 		phoneNumF.setBounds(110, 136, 152, 28);
 		pnl.add(phoneNumF);
+		phoneNumF.setText("010-0000-0000");
+		
+		phoneNumF.addFocusListener(new FocusAdapter() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				phoneNumF.setText("");
+				super.focusGained(e);
+			}
+			
+		});
 
 		btn.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String query = "SELECT * FROM login_info";
@@ -78,6 +102,8 @@ public class Findid extends JFrame {
 						if (usernameF.getText().equals(name) && phoneNumF.getText().equals(phoneNum)) {
 							JOptionPane.showMessageDialog(Findid.this, "아이디는 " + userid);
 							b = true;
+							usernameF.setText("");
+							phoneNumF.setText("");
 							setVisible(false);
 						} else {
 
@@ -105,6 +131,8 @@ public class Findid extends JFrame {
 
 		setLocationRelativeTo(null); // 창이 가운데에서 출력된다
 		setResizable(false);
+		usernameF.setToolTipText("이름을 입력하세요!");
+		phoneNumF.setToolTipText("전화번호를 입력하세요!");
 
 	}
 

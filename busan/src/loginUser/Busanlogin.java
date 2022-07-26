@@ -23,8 +23,11 @@ public class Busanlogin {
 		int userNum = rs.getInt("userNum");
 		String id = rs.getString("id");
 		String password = rs.getString("password");
+		String name = rs.getString("name");
+		String birthDay = rs.getString("birthDay");
+		String phoneNum = rs.getString("phoneNum");
 
-		return new BusanUser(userNum, id, password);
+		return new BusanUser(userNum, id, password, name, birthDay, phoneNum);
 	}
 
 	public int create(String id, String password, String name, String birthDay, String phoneNum) throws SQLException {
@@ -84,28 +87,31 @@ public class Busanlogin {
 	}
 	
 	
-	public int matchId(String id) throws SQLException {
-		String query = "SELECT * FROM login_info WHERE id = ?";
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-
-	
-
-		try {
-			conn = BusanUtil.getConnection();
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, id);
+//	public List<String> matchId(String id) throws SQLException {
+//		String query = "SELECT * FROM login_info WHERE id = ?";
+//
+//		Connection conn = null;
+//		PreparedStatement pstmt = null;
+//		
+//		
+//		List<String> list = new ArrayList<>();
+//	
+//
+//		try {
+//			conn = BusanUtil.getConnection();
+//			pstmt = conn.prepareStatement(query);
+//			pstmt.setString(1, id);
+////			return pstmt.executeUpdate();
+//			
+//			}
 //			pstmt.setString(2, password);
-			return pstmt.executeUpdate();
-			
-		} finally {
-			
-			BusanUtil.closeStmt(pstmt);
-			BusanUtil.closeConn(conn);
-		}
-	}
+//			
+//			
+//		} finally {
+//			BusanUtil.closeStmt(pstmt);
+//			BusanUtil.closeConn(conn);
+//		}
+//	}
 
 	public static void main(String[] args) {
 		Busanlogin log = new Busanlogin();
@@ -113,13 +119,14 @@ public class Busanlogin {
 		
 
 		try {
-			System.out.println(log.matchId("mmmm"));
+			System.out.println();
 			
-//			for (int i = 0; i < log.read().size(); i++) {
-//				if(log.read().get(i).getPassword().equals("aaaa")) {
-//					System.out.println(log.read().get(i).getId());
-//				}
-//			}
+			
+			for (int i = 0; i < log.read().size(); i++) {
+				if(log.read().get(i).getPassword().equals("aaaa")) {
+					System.out.println(log.read().get(i).getId());
+				}
+			}
 			
 			
 		} catch (SQLException e) {
