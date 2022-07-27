@@ -129,14 +129,44 @@ public class Join extends JFrame {
 		pnl.add(userPhoneF);
 		
 		userPhoneF.setText("010-0000-0000");
+		userbirthDayF.setText("생년월일 6글자");
+		
+		userbirthDayF.addFocusListener(new FocusAdapter() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				userbirthDayF.setText("");
+				super.focusGained(e);
+			}
+			
+	         @Override
+	         public void focusLost(FocusEvent e) { //포커스가 벗어났을때 ""이었으면 "값을 입력하세요"이고, 뭐라도 값이 있었으면 아무짓도 안함
+	            if (userbirthDayF.getText().equals("")) {
+	            	userbirthDayF.setText("생년월일 6글자");
+	            }
+	         }
+	       
+			
+		});
+		
+		
 		
 		userPhoneF.addFocusListener(new FocusAdapter() {
 
 			@Override
 			public void focusGained(FocusEvent e) {
+				
 				userPhoneF.setText("");
 				super.focusGained(e);
 			}
+			
+			  @Override
+		         public void focusLost(FocusEvent e) { //포커스가 벗어났을때 ""이었으면 "값을 입력하세요"이고, 뭐라도 값이 있었으면 아무짓도 안함
+		            if (userPhoneF.getText().equals("")) {
+		            	userPhoneF.setText("010-0000-0000");
+		            }
+		         }
 			
 		});
 		
@@ -204,7 +234,7 @@ public class Join extends JFrame {
 								ps.setText("");
 								psre.setText("");
 								usernameF.setText("");
-								userbirthDayF.setText("");
+								userbirthDayF.setText("생년월일 6글자");
 								userPhoneF.setText("010-0000-0000");
 								//System.out.println("되고있니");
 								setVisible(false);

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,10 +18,14 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import Bulletin.Bullentin;
 import kr.co.greenart.dbutil.BusanUtil;
 
 public class Login extends JFrame {
 	private boolean b = false;
+	private BusanUser user;
+	private Busanlogin dao = new Busanlogin();
+	private List<BusanUser> list = new ArrayList<>();
 	
 	public Login() {
 		super("로그인 프로그램");
@@ -99,44 +105,90 @@ public class Login extends JFrame {
 		
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String query = "SELECT * FROM login_info";
-				
-				Connection conn = null;
-				Statement stmt = null;
-				ResultSet rs = null;
-				
 				try {
-					conn = BusanUtil.getConnection();
-					stmt = conn.createStatement();
-					rs = stmt.executeQuery(query);
-					String a = "";
-					
-					while (rs.next()) {
-						String userid = rs.getString("id");
-						String userpassword = rs.getString("password");
-						
-						if (id.getText().equals(userid) && ps.getText().equals(userpassword)) {
-							JOptionPane.showMessageDialog(Login.this, "로그인 되었습니다");
-							b = true;
-							setVisible(false);
-						} else { 
-							if (!id.getText().equals(userid) || !ps.getText().equals(userpassword)) {
-								a = "아이디 또는 비밀번호를 확인하세요.";
-								}
-						}
-					}
-					if (!b) {
-					JOptionPane.showMessageDialog(Login.this, a);
-					}
-					
+					list = dao.read();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
-				} finally {
-					BusanUtil.closeRS(rs);
-					BusanUtil.closeStmt(stmt);
-					BusanUtil.closeConn(conn);
 				}
+				
+				user = new BusanUser(id.getText(), ps.getText());
+				
+				if(list.contains(user)) {
+					user = list.get(list.indexOf(user));
+					Login.this.setVisible(false);
+					new Bullentin(user).setVisible(true);
+					//다음 프레임에 유저 정보를 전달
+					//Frame a = new Frame(user);
+
+				} else {
+					JOptionPane.showMessageDialog(Login.this, "회원가입 해주세요.");
+				}
+				
+				
+//				String query = "SELECT * FROM login_info";		
+				
+//				Connection conn = null;
+//				Statement stmt = null;
+//				ResultSet rs = null;
+//				
+//				try {
+//					conn = BusanUtil.getConnection();
+//					stmt = conn.createStatement();
+//					rs = stmt.executeQuery(query);
+//					String a = "";
+//					
+//					while (rs.next()) {
+//						String userid = rs.getString("id");
+//						String userpassword = rs.getString("password");
+//						
+//						
+//						if (id.getText().equals(userid) && ps.getText().equals(userpassword)) {
+//							JOptionPane.showMessageDialog(Login.this, "로그인 되었습니다");
+//							b = true;
+//							setVisible(false);
+//						} else { 
+//							if (!id.getText().equals(userid) || !ps.getText().equals(userpassword)) {
+//								a = "아이디 또는 비밀번호를 확인하세요.";
+//								}
+//						}
+//					}
+//					if (!b) {
+//					JOptionPane.showMessageDialog(Login.this, a);
+//					}
+//					
+//				} catch (SQLException e1) {
+//					e1.printStackTrace();
+//				} finally {
+//					BusanUtil.closeRS(rs);
+//					BusanUtil.closeStmt(stmt);
+//					BusanUtil.closeConn(conn);
+//				}
 								
+			}
+		});
+		
+		ps.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					list = dao.read(); // DB에서 정보를 다 읽어와서 리스트에 저장
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				
+				user = new BusanUser(id.getText(), ps.getText());
+				
+				if(list.contains(user)) {  // 리스트안에 유저의 아이디가 있으면
+					user = list.get(list.indexOf(user));  // 그 아이디가 있는 인덱스번호를 알아낸후 그 안에 모든 정보를 유저에 저장
+					new Bullentin(user).setVisible(true);  // 다음 프레임에 생성자에 유저를 받을수있게 만든후 실행
+					Login.this.setVisible(false);
+					//다음 프레임에 유저 정보를 전달
+					//Frame a = new Frame(user);
+
+				} else {
+					JOptionPane.showMessageDialog(Login.this, "회원가입 해주세요.");
+				}
 			}
 		});
 		

@@ -89,6 +89,26 @@ public class BusanUser {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof BusanUser))
+			return false;
+		BusanUser other = (BusanUser) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "BusanUser [userNum=" + userNum + ", id=" + id + ", password=" + password + ", name=" + name
 				+ ", birthDay=" + birthDay + ", phoneNum=" + phoneNum + "]";
