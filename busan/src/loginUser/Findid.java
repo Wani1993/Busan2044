@@ -1,6 +1,7 @@
 package loginUser;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -17,8 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import kr.co.greenart.dbutil.BusanUtil;
-import java.awt.Font;
+import kr.co.green.BusanUtil;
 
 public class Findid extends JFrame {
 
@@ -76,6 +76,13 @@ public class Findid extends JFrame {
 				phoneNumF.setText("");
 				super.focusGained(e);
 			}
+			
+			 @Override
+	         public void focusLost(FocusEvent e) { //포커스가 벗어났을때 ""이었으면 "값을 입력하세요"이고, 뭐라도 값이 있었으면 아무짓도 안함
+	            if (phoneNumF.getText().equals("")) {
+	            	phoneNumF.setText("010-0000-0000");
+	            }
+	         }
 			
 		});
 

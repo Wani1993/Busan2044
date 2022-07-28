@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import kr.co.greenart.dbutil.BusanUtil;
+import kr.co.green.BusanUtil;
 import loginUser.Busanlogin;
 
 

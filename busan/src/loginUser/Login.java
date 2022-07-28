@@ -1,15 +1,18 @@
 package loginUser;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,14 +21,17 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import Bulletin.Bullentin;
-import kr.co.greenart.dbutil.BusanUtil;
+import bulletin.Bullentin;
 
 public class Login extends JFrame {
-	private boolean b = false;
+//	private boolean b = false;
 	private BusanUser user;
 	private Busanlogin dao = new Busanlogin();
 	private List<BusanUser> list = new ArrayList<>();
+//	
+
+
+	
 	
 	public Login() {
 		super("로그인 프로그램");
@@ -33,63 +39,67 @@ public class Login extends JFrame {
 		JTextField id = new JTextField(10);
 		// TODO 폰트
 		id.setFont(new Font("한컴산뜻돋움", Font.BOLD, 14));
-		id.setBounds(94, 24, 253, 28);
+		id.setBounds(160, 463, 253, 28);
 		JPasswordField ps = new JPasswordField(10);
-		ps.setBounds(94, 78, 253, 30);
+		ps.setBounds(160, 510, 253, 30);
 		
 		Join join = new Join();
 		Findpw fpw = new Findpw();
 		Findid fid = new Findid();
+	
 		
-		
-		
+		URL mainImg = Login.class.getClassLoader().getResource("main.jpg");
+		ImageIcon mainIcon = new ImageIcon(mainImg);
+		JLabel mainlbl = new JLabel();
+		mainlbl.setBounds(0, 0, 480, 800);
+		mainlbl.setIcon(mainIcon);
 		
 		
 		// TODO 폰트
 		JButton btn = new JButton("로그인");
 		btn.setFont(new Font("한컴산뜻돋움", Font.BOLD, 14));
-		btn.setBounds(44, 125, 126, 31);
-		btn.setBackground(Color.white);
-		btn.setForeground(Color.pink);
+		btn.setBounds(74, 575, 126, 31);
+		btn.setBackground(Color.DARK_GRAY);
+		btn.setForeground(Color.white);
 		
 		
 		// TODO 폰트
 		JButton btn2 = new JButton("회원가입");
 		btn2.setFont(new Font("한컴산뜻돋움", Font.BOLD, 14));
-		btn2.setBounds(219, 125, 126, 31);
-		btn2.setBackground(Color.white);
-		btn2.setForeground(Color.pink);
+		btn2.setBounds(276, 575, 126, 31);
+		btn2.setBackground(Color.DARK_GRAY);
+		btn2.setForeground(Color.white);
 		
 		// TODO 폰트
 		JLabel idlbl = new JLabel("아이디");
-		idlbl.setFont(new Font("한컴산뜻돋움", Font.BOLD, 14));
-		idlbl.setBounds(25, 30, 57, 15);
-		idlbl.setForeground(Color.white);
+		idlbl.setFont(new Font("한컴산뜻돋움", Font.BOLD, 18));
+		idlbl.setBounds(63, 469, 57, 15);
+		idlbl.setForeground(Color.DARK_GRAY);
 		
 		// TODO 폰트
 		JLabel pwlbl = new JLabel("비밀번호");
-		pwlbl.setFont(new Font("한컴산뜻돋움", Font.BOLD, 14));
-		pwlbl.setBounds(25, 85, 70, 15);
-		pwlbl.setForeground(Color.white);
+		pwlbl.setFont(new Font("한컴산뜻돋움", Font.BOLD, 18));
+		pwlbl.setBounds(63, 517, 70, 15);
+		pwlbl.setForeground(Color.DARK_GRAY);
 
 		// TODO 폰트
 		JButton btn3 = new JButton("아이디 찾기");
 		btn3.setFont(new Font("한컴산뜻돋움", Font.BOLD, 14));
-		btn3.setBounds(44, 165, 126, 31);
-		btn3.setBackground(Color.white);
-		btn3.setForeground(Color.pink);
+		btn3.setBounds(74, 632, 126, 31);
+		btn3.setBackground(Color.DARK_GRAY);
+		btn3.setForeground(Color.white);
 		
 		
 	
 		
 		JButton btn4 = new JButton("비밀번호 찾기");
 		btn4.setFont(new Font("한컴산뜻돋움", Font.BOLD, 13));
-		btn4.setBounds(219, 165, 126, 31);
-		btn4.setBackground(Color.white);
-		btn4.setForeground(Color.pink);
-
+		btn4.setBounds(276, 632, 126, 31);
+		btn4.setBackground(Color.DARK_GRAY);
+		btn4.setForeground(Color.white);
 
 			
+		
 		
 		getContentPane().add(pnl);
 		pnl.setLayout(null);
@@ -101,6 +111,7 @@ public class Login extends JFrame {
 		pnl.add(btn2);
 		pnl.add(btn3);
 		pnl.add(btn4);
+		pnl.add(mainlbl);
 		
 		
 		btn.addActionListener(new ActionListener() {
@@ -216,18 +227,21 @@ public class Login extends JFrame {
 
 		
 		
-		setSize(400, 250);
+		setSize(480, 800);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		pnl.setBackground(Color.pink);
+		pnl.setBackground(Color.black);
 		id.setToolTipText("아이디를 입력하세요!");
 		ps.setToolTipText("비밀번호를 입력하세요!");
+		
+
+		
 		
 	    setLocationRelativeTo(null); // 창이 가운데에서 출력된다
 	    setResizable(false); // 사이즈 조정 불가
 		
 	}
 	
-	
+
 	
 	public static void main(String[] args) {
 		Login l = new Login();

@@ -9,9 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -23,7 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import kr.co.greenart.dbutil.BusanUtil;
+import kr.co.green.BusanUtil;
+
 
 public class Join extends JFrame {
 	private Busanlogin user = new Busanlogin();

@@ -10,24 +10,23 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import kr.co.greenart.dbutil.BusanUtil;
+import kr.co.green.BusanUtil;
+
 
 public class Findpw extends JFrame {
 
 	private boolean b = false;
 
 	public Findpw() {
-		super("비번찾기");
+		super("비밀번호 찾기");
 
 		JPanel pnl = new JPanel();
 		JTextField id = new JTextField(10);
@@ -61,11 +60,11 @@ public class Findpw extends JFrame {
 		username.setBounds(17, 96, 57, 15);
 		pnl.add(username);
 
-		JLabel userPhone = new JLabel("전화번호");
+		JLabel PhoneNum = new JLabel("전화번호");
 		// TODO 폰트
-		userPhone.setFont(new Font("HY목각파임B", Font.BOLD, 14));
-		userPhone.setBounds(17, 151, 75, 15);
-		pnl.add(userPhone);
+		PhoneNum.setFont(new Font("HY목각파임B", Font.BOLD, 14));
+		PhoneNum.setBounds(17, 151, 75, 15);
+		pnl.add(PhoneNum);
 
 		JTextField usernameF = new JTextField(10);
 		// TODO 폰트
@@ -73,21 +72,28 @@ public class Findpw extends JFrame {
 		usernameF.setBounds(110, 90, 152, 28);
 		pnl.add(usernameF);
 
-		JTextField userPhoneF = new JTextField(10);
+		JTextField PhoneNumF = new JTextField(10);
 		// TODO 폰트
-		userPhoneF.setFont(new Font("HY목각파임B", Font.BOLD, 14));
-		userPhoneF.setBounds(110, 145, 152, 28);
-		pnl.add(userPhoneF);
+		PhoneNumF.setFont(new Font("HY목각파임B", Font.BOLD, 14));
+		PhoneNumF.setBounds(110, 145, 152, 28);
+		pnl.add(PhoneNumF);
 		
-		userPhoneF.setText("010-0000-0000");
+		PhoneNumF.setText("010-0000-0000");
 		
-		userPhoneF.addFocusListener(new FocusAdapter() {
+		PhoneNumF.addFocusListener(new FocusAdapter() {
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				userPhoneF.setText("");
+				PhoneNumF.setText("");
 				super.focusGained(e);
 			}
+			
+			 @Override
+	         public void focusLost(FocusEvent e) { //포커스가 벗어났을때 ""이었으면 "값을 입력하세요"이고, 뭐라도 값이 있었으면 아무짓도 안함
+	            if (PhoneNumF.getText().equals("")) {
+	            	PhoneNumF.setText("010-0000-0000");
+	            }
+	         }
 			
 		});
 		
@@ -119,12 +125,12 @@ public class Findpw extends JFrame {
 						String phoneNum = rs.getString("phoneNum");
 
 						if (id.getText().equals(userid) && usernameF.getText().equals(name)
-								&& userPhoneF.getText().equals(phoneNum)) {
+								&& PhoneNumF.getText().equals(phoneNum)) {
 							JOptionPane.showMessageDialog(Findpw.this, "비밀번호는 " + userpassword);
 							b = true;
 							id.setText("");
 							usernameF.setText("");
-							userPhoneF.setText("");
+							PhoneNumF.setText("");
 							setVisible(false);
 						} else {
 
@@ -139,8 +145,8 @@ public class Findpw extends JFrame {
 //							}
 
 							if (!id.getText().equals(userid) || !usernameF.getText().equals(name)
-									|| !userPhoneF.getText().equals(phoneNum)) {
-								if (id.getText().equals("") || usernameF.getText().equals("") || (userPhoneF.getText().equals(""))) {
+									|| !PhoneNumF.getText().equals(phoneNum)) {
+								if (id.getText().equals("") || usernameF.getText().equals("") || (PhoneNumF.getText().equals(""))) {
 									a = "빈칸을 채워주세요.";
 									a1 = "";
 									a2 = "";
@@ -152,29 +158,29 @@ public class Findpw extends JFrame {
 								if(!usernameF.getText().equals(name)) {
 									count++;
 								}
-								if(!userPhoneF.getText().equals(phoneNum)) {
+								if(!PhoneNumF.getText().equals(phoneNum)) {
 									count++;
 								}
 									
 
 								if ( (!id.getText().equals(userid)
-										&& (usernameF.getText().equals(name) && userPhoneF.getText().equals(phoneNum)))
-										|| (!id.getText().equals(userid) && userPhoneF.getText().equals(phoneNum))
+										&& (usernameF.getText().equals(name) && PhoneNumF.getText().equals(phoneNum)))
+										|| (!id.getText().equals(userid) && PhoneNumF.getText().equals(phoneNum))
 										|| (!id.getText().equals(userid) && usernameF.getText().equals(name)) ) {
 									a = "아이디를 확인하세요\n";
 																		
 								}
 								if ( (!usernameF.getText().equals(name)
-										&& (id.getText().equals(userid) && userPhoneF.getText().equals(phoneNum)))
-										|| (!usernameF.getText().equals(name) && userPhoneF.getText().equals(phoneNum))
+										&& (id.getText().equals(userid) && PhoneNumF.getText().equals(phoneNum)))
+										|| (!usernameF.getText().equals(name) && PhoneNumF.getText().equals(phoneNum))
 										|| (!usernameF.getText().equals(name) && id.getText().equals(userid)) ) {
 									a1 = "이름을 확인하세요\n";
 									
 								} 
-								if ( (!userPhoneF.getText().equals(phoneNum)
+								if ( (!PhoneNumF.getText().equals(phoneNum)
 										&& (id.getText().equals(userid) && usernameF.getText().equals(name)))
-										|| (!userPhoneF.getText().equals(phoneNum) && id.getText().equals(userid))
-										|| (!userPhoneF.getText().equals(phoneNum) && usernameF.getText().equals(name)) ) {
+										|| (!PhoneNumF.getText().equals(phoneNum) && id.getText().equals(userid))
+										|| (!PhoneNumF.getText().equals(phoneNum) && usernameF.getText().equals(name)) ) {
 									a2 = "전화번호를 확인하세요\n";
 									
 								} 
@@ -210,7 +216,7 @@ public class Findpw extends JFrame {
 		setResizable(false); // 사이즈 조정불가
 		id.setToolTipText("아이디를 입력하세요!");
 		usernameF.setToolTipText("이름을 입력하세요!");
-		userPhoneF.setToolTipText("전화번호를 입력하세요!");
+		PhoneNumF.setToolTipText("전화번호를 입력하세요!");
 
 
 	}

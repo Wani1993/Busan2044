@@ -7,7 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.co.greenart.dbutil.BusanUtil;
+import kr.co.green.BusanUtil;
+
 
 
 public class Busanlogin {
