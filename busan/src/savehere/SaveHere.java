@@ -3,25 +3,35 @@ package savehere;
 public class SaveHere {
 	private int num;
 	private String userId;
-	private String stroyPath;
-
-	public SaveHere() {
+	private String storyPath, storyPath2, dayNight, date, userStat, party, item;
+	
+	public SaveHere(String userId, String stroyPath, String storyPath2, String dayNight, String date,
+			String userStat, String party, String item) {
 		super();
-	}
-
-	public SaveHere(int num, String userId, String stroyPath) {
-		super();
-		this.num = num;
-		this.userId = userId;
-		this.stroyPath = stroyPath;
 		
+		this.userId = userId;
+		this.storyPath = stroyPath;
+		this.storyPath2 = storyPath2;
+		this.dayNight = dayNight;
+		this.date = date;
+		this.userStat = userStat;
+		this.party = party;
+		this.item = item;
 	}
-	
-	
+
 	public SaveHere(String userId, String stroyPath) {
 		super();
 		this.userId = userId;
-		this.stroyPath = stroyPath;
+		this.storyPath = stroyPath;
+	}
+	
+	
+
+	public SaveHere(String userId, String stroyPath, String storyPath2) {
+		super();
+		this.userId = userId;
+		this.storyPath = stroyPath;
+		this.storyPath2 = storyPath2;
 	}
 
 	public int getNum() {
@@ -40,18 +50,96 @@ public class SaveHere {
 		this.userId = userId;
 	}
 
-	public String getStroyPath() {
-		return stroyPath;
+	public String getStroyPath1() {
+		return storyPath;
 	}
 
-	public void setStroyPath(String stroyPath) {
-		this.stroyPath = stroyPath;
+	public void setStroyPath1(String stroyPath) {
+		this.storyPath = stroyPath;
+	}
+
+
+	
+
+	public String getStoryPath2() {
+		return storyPath2;
+	}
+
+	public void setStoryPath2(String storyPath2) {
+		this.storyPath2 = storyPath2;
+	}
+
+	public String getDayNight() {
+		return dayNight;
+	}
+
+	public void setDayNight(String dayNight) {
+		this.dayNight = dayNight;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getUserStat() {
+		return userStat;
+	}
+
+	public void setUserStat(String userStat) {
+		this.userStat = userStat;
+	}
+
+	public String getParty() {
+		return party;
+	}
+
+	public void setParty(String party) {
+		this.party = party;
+	}
+
+	public String getItem() {
+		return item;
+	}
+
+	public void setItem(String item) {
+		this.item = item;
+	}
+
+	@Override
+	public String toString() {
+		return "SaveHere [num=" + num + ", userId=" + userId + ", stroyPath=" + storyPath + ", storyPath2=" + storyPath2
+				+ ", dayNight=" + dayNight + ", date=" + date + ", userStat=" + userStat + ", party=" + party
+				+ ", item=" + item + "]";
 	}
 
 
 	@Override
-	public String toString() {
-		return "SaveHere [num=" + num + ", userId=" + userId + ", stroyPath=" + stroyPath + "]";
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof SaveHere))
+			return false;
+		SaveHere other = (SaveHere) obj;
+		if (storyPath2 == null) {
+			if (other.storyPath2 != null)
+				return false;
+		} else if (!storyPath2.equals(other.storyPath2))
+			return false;
+		if (storyPath == null) {
+			if (other.storyPath != null)
+				return false;
+		} else if (!storyPath.equals(other.storyPath))
+			return false;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		return true;
 	}
 	
 		

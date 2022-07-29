@@ -13,42 +13,22 @@ import loginUser.Busanlogin;
 
 
 public class SaveHereDaoImpl implements SaveHereDao {
-
+	
 	private SaveHere resultMapping(ResultSet rs) throws SQLException {
-		int num = rs.getInt("num");
 		String userId = rs.getString("userId");
-		String stroyPath = rs.getString("stroyPath");
+		String storyPath1 = rs.getString("storyPath1");
+		String storyPath2 = rs.getString("storyPath2");
+		String dayNight = rs.getString("dayNight");
+		String date = rs.getString("date");
+		String userStat = rs.getString("userStat");
+		String party = rs.getString("party");
+		String item = rs.getString("item");
 		
 
-		return new SaveHere(num, userId, stroyPath);
+		return new SaveHere(userId, storyPath1, storyPath2, dayNight, date, userStat, party, item);
 	}
 
-	@Override
-	public int create(String userId, String storyPath) throws SQLException {
-		String query = "INSERT INTO savehere (userId , storyPath) VALUES (?, ?)";
-		
-
-		Connection conn = null;
-		PreparedStatement pstmt = null; // statement 의 자식 클래스
-										// 쿼리문에 넣을 값을 ? 로 만들어놓고 이후에 내가 원하는  값으로 세팅해준다
-		
-		 
-		try {
-			conn = BusanUtil.getConnection();
-			pstmt = conn.prepareStatement(query);
-			 // 첫번째 인덱스에 값을 넣는다
-			pstmt.setString(1, userId);
-			pstmt.setString(2, storyPath);
-			
-			
-			return pstmt.executeUpdate();  // 위에서 쿼리문을 다 설정을 해놓은 상태라 파라미터를 비워놓는다.
-			
-		} finally {
-			BusanUtil.closeStmt(pstmt);
-			BusanUtil.closeConn(conn);
-		}
-	}
-
+	
 	@Override
 	public List<SaveHere> read() throws SQLException {
 	String query = "SELECT * FROM savehere";
@@ -75,21 +55,23 @@ public class SaveHereDaoImpl implements SaveHereDao {
 	}
 
 	@Override
-	public SaveHere read(int num) throws SQLException {
-		String query = "SELECT * FROM savehere WHERE companyNum = ?";
+	public String read(String userId) throws SQLException {
+		String query = "SELECT * FROM savehere WHERE userId = ?";
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		String result = null;
 		
 		try {
 			conn = BusanUtil.getConnection();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, num);
+			pstmt.setString(1, userId);
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				return resultMapping(rs);
+			while (rs.next()) {
+			  result =	rs.getString("storyPath1") + ", " + rs.getString("storyPath2");
+				
+				return result;
 			}
 			
 		} finally {
@@ -99,63 +81,44 @@ public class SaveHereDaoImpl implements SaveHereDao {
 		}
 		return null;
 	}
-
-	@Override
-	public int update(int num, String userId, String stroyPath) throws SQLException {
-		String query = "UPDATE savehere SET userId = ?, stroyPath = ? WHERE num = ?";
 		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = BusanUtil.getConnection();
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, userId);
-			pstmt.setString(2, stroyPath);
-			
-			pstmt.setInt(3, num);
-			
-			return pstmt.executeUpdate();
-		} finally {
-			BusanUtil.closeStmt(pstmt);
-			BusanUtil.closeConn(conn);
-		}
-	}
-
-	@Override
-	public int delete(int num) throws SQLException {
-		String query = "DELETE FROM savehere WHERE num = ?";
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = BusanUtil.getConnection();
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, num);
-			
-			return pstmt.executeUpdate();
-		} finally {
-			BusanUtil.closeStmt(pstmt);
-			BusanUtil.closeConn(conn);
-		}
-	}
 	
-	public static void main(String[] args) {
-		SaveHereDaoImpl sh = new SaveHereDaoImpl();
-		Busanlogin l = new Busanlogin();
-		Random ran = new Random();
+	@Override
+	public String readEnd(String ending_Name) throws SQLException {
+		String query = "SELECT ending_text FROM statistics_ending WHERE ending_Name LIKE ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String result = "";
+		
 		try {
-			l.read();
-			for (int i = 0; i < 5; i++) {
-				sh.create(l.getList().get(i).getId(), i + "-" + (i + ran.nextInt(5) + 1) + "-" + (i + ran.nextInt(8) + 1) + "-");
+			conn = BusanUtil.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, ending_Name + "%");
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+			  result +=	rs.getString("ending_text");
 			}
 			
-			
-			
+		} finally {
+			BusanUtil.closeRS(rs);
+			BusanUtil.closeStmt(pstmt);
+			BusanUtil.closeConn(conn);
+		}
+		return result;
+	}
+
+
+	public static void main(String[] args) {
+		SaveHereDaoImpl s = new SaveHereDaoImpl();
+		try {
+			System.out.println(s.read("magic22x"));
+			System.out.println(s.readEnd("nomal"));
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		
 	}
 

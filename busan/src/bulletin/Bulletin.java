@@ -281,8 +281,8 @@ public class Bulletin extends JFrame {
 			lblD[i] = new JLabel();
 			pnlC[i].add(lblC[i]);
 			pnlC[i].add(lblD[i]);
-			lblC[i].setFont(new Font("한컴산뜻돋움", Font.BOLD, 14));
-			lblD[i].setFont(new Font("한컴산뜻돋움", Font.BOLD, 14));
+			lblC[i].setFont(new Font("한컴산뜻돋움", Font.BOLD, 16));
+			lblD[i].setFont(new Font("한컴산뜻돋움", Font.BOLD, 16));
 		
 		}
 		
