@@ -34,9 +34,12 @@ import bulletin.Bulletin;
 import kr.co.green.BusanUtil;
 import loginUser.BusanUser;
 import loginUser.Login;
+import main2.StoryPnl2;
+import statistics.AchvPnl;
 
 public class StoryPnl extends JFrame {
 	private BusanUser loguser;
+//	private StoryPnl2 storyPnl2;
 	private Bulletin bul;
 	private JPanel pnlBBG;
 	private NpcDao npcdao = new NpcDao();
@@ -74,6 +77,9 @@ public class StoryPnl extends JFrame {
 	private List<JLabel> userInven = new ArrayList<>();
 	private List<JLabel> userInvenCount = new ArrayList<>();
 
+	// 선택지 중복 가능하게 하기 위한 생성자
+	int repeatNum;
+
 	public void hpmp() {
 		int heart = user.getHp();
 		int mental = user.getMental();
@@ -108,6 +114,67 @@ public class StoryPnl extends JFrame {
 		itemconsole.lblCount(userInven, userInvenCount);
 		for (int i = 0; i < userInven.size(); i++) {
 			itemconsole.imgHover(userInven.get(i));
+		}
+	}
+
+//	중복 선택지 활성화 메소드
+	private void repeatChoice(int btn) {
+		choicePnl.setVisible(true);
+		if (repeatNum < 2) {
+			btnChoice[btn].setEnabled(false);
+			switch (btn) {
+			case 0: { // 장주먹
+				itemconsole.getItem(8); // 살골
+				user.getParty().add(4);
+				npcImg(lblNpcImg);
+				itemconsole.lblImg(userInven, user.getInventory());
+				itemconsole.lblCount(userInven, userInvenCount);
+				break;
+			}
+			case 1: { // 전판례
+				itemconsole.getItem(7); // 법전
+				user.getParty().add(5);
+				npcImg(lblNpcImg);
+				itemconsole.lblImg(userInven, user.getInventory());
+				itemconsole.lblCount(userInven, userInvenCount);
+				break;
+			}
+			case 2: { // 도독놈
+//				itemconsole.getItem(8); // 없음
+				user.getParty().add(6);
+				npcImg(lblNpcImg);
+				break;
+			}
+
+			case 3: { // 고모리
+				itemconsole.getItem(2); // 천본앵?
+				user.getParty().add(7);
+				npcImg(lblNpcImg);
+				itemconsole.lblImg(userInven, user.getInventory());
+				itemconsole.lblCount(userInven, userInvenCount);
+				break;
+			}
+
+			case 4: { // 한은둔
+//				itemconsole.getItem(8); // 없음
+				user.getParty().add(8);
+				npcImg(lblNpcImg);
+				break;
+			}
+
+			}
+			btn += 6;
+			repeatNum++;
+			storyArea.setText(getAchoice(btn).getStoryMain());
+
+			if (repeatNum == 2) {
+				sn++;
+				choicePnl.setVisible(false);
+				snChoice++;
+			}
+		} else {
+			sn++;
+			storyArea.setText(getAstory(sn).getStoryMain());
 		}
 	}
 
@@ -203,6 +270,7 @@ public class StoryPnl extends JFrame {
 		for (int i = 0; i < btnNum; i++, listIndex++) {
 			btnChoice[i].setText(getAchoice(listIndex).getChoiceMain());
 			btnChoice[i].setVisible(true);
+			btnChoice[i].setEnabled(true);
 			if (snChoice == 7 && i == 1) {
 				btnChoice[i].setText(getAchoice(listIndex + 1).getChoiceMain());
 				break;
@@ -384,6 +452,7 @@ public class StoryPnl extends JFrame {
 	public StoryPnl(BusanUser loguser) {
 		super("부산2044");
 		this.loguser = loguser;
+		
 		// 인벤토리 예시
 
 		JPanel pnl_userInven = new JPanel();
@@ -462,7 +531,7 @@ public class StoryPnl extends JFrame {
 
 		// 기본지급 아이템들~~~~~!!!!!!
 		user.setInventory(
-				new ArrayList<Item>(Arrays.asList(new Item(3, 9999, 1), new Item(19, 0, 2), new Item(10, 0, 3))));
+				new ArrayList<Item>(Arrays.asList(new Item(3, 9999, 1), new Item(19, 0, 2), new Item(10, 0, 3), new Item(12, 0, 1))));
 		userInven(); // 이 메소드는 항상 써줘야 inventory List<Item>이 이미ㅈ화 된다
 
 		ToolTipManager m = ToolTipManager.sharedInstance();
@@ -538,8 +607,8 @@ public class StoryPnl extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				System.out.println(user.getInventory());
-				System.out.println(user.getHp() + "  " + user.getMental());
+//				System.out.println(user.getInventory());
+//				System.out.println(user.getHp() + "  " + user.getMental());
 				try {
 					storyArea.setText(getAstory(sn).getStoryMain());
 					if (sn == 23 && num13 == 0) {
@@ -582,7 +651,7 @@ public class StoryPnl extends JFrame {
 //					System.out.println(sn + "\t" + snChoice);
 				} catch (IndexOutOfBoundsException ex) {
 					storyArea.setText(
-							"\n\n\n\n\n\t\tT\n\t\tH\n\t\tA\n\t\tN\n\t\tK\n\n\t\tU\n\t\n\t                    for playing !");
+							"챕터 2로 이동~!!");
 					System.out.println("선택지 " + path.toString());
 					System.out.println("choiceId " + path_c.toString());
 //					insertPath(path_c.toString());
@@ -609,34 +678,38 @@ public class StoryPnl extends JFrame {
 		btnChoice[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				choiceText(snChoice);
-				storyUpdate(1);
-				if (snChoice == 0) {
-					user.mentalRefresh("down", 1);
-				} else if (snChoice == 1) {
-					itemconsole.itemRemove(19);
-					System.out.println(user.getInventory());
-				} else if (snChoice == 2) {
-					itemconsole.getItem(8); // 살골
-					user.getParty().add(4);
-					npcImg(lblNpcImg);
-					System.out.println(user.getInventory());
-				} else if (snChoice == 5) {
-					System.out.println("출혈에 걸렸다!" + user.getBleed());
-					itemconsole.itemRemove(19);
-					JOptionPane.showMessageDialog(StoryPnl.this, "출혈에 걸려서 붕대를 사용했다!!");
-				} else if (snChoice == 8) {
-					user.mentalRefresh("down", 1);
-					System.out.println("강아지");
-				}
+				if (getAstory(sn).getStoryNum().equals("3-2")) {
+					repeatChoice(0);
+				} else {
+					choiceText(snChoice);
+					storyUpdate(1);
+					if (snChoice == 0) {
+						user.mentalRefresh("down", 1);
+					} else if (snChoice == 1) {
+						itemconsole.itemRemove(19);
+						System.out.println(user.getInventory());
+//					} else if (snChoice == 2) {
+//						itemconsole.getItem(8); // 살골
+//						user.getParty().add(4);
+//						npcImg(lblNpcImg);
+//						System.out.println(user.getInventory());
+					} else if (snChoice == 5) {
+						System.out.println("출혈에 걸렸다!" + user.getBleed());
+						itemconsole.itemRemove(19);
+						JOptionPane.showMessageDialog(StoryPnl.this, "출혈에 걸려서 붕대를 사용했다!!");
+					} else if (snChoice == 8) {
+						user.mentalRefresh("down", 1);
+						System.out.println("강아지");
+					}
 
-				if (snChoice == 7) {
-					stop = true;
+					if (snChoice == 7) {
+						stop = true;
+					}
+					snChoice++;
+					path.add('1');
+					userInven();
+					hpmp();
 				}
-				snChoice++;
-				path.add('1');
-				userInven();
-				hpmp();
 			}
 		});
 
@@ -648,31 +721,37 @@ public class StoryPnl extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				choiceText(snChoice);
-				storyUpdate(2);
-				if (snChoice == 2) {
-					itemconsole.getItem(7); // 법전 얻기
-					user.getParty().add(5);
-					npcImg(lblNpcImg);
-					System.out.println(user.getInventory());
-				} else if (snChoice == 4) {
-					user.HPRefresh("down", 10);
-					System.out.println("배드엔딩 넣기");
-				} else if (snChoice == 8) {
-					user.mentalRefresh("up", 1); // 쿠키 얻기
-					itemconsole.itemRemove(10);
-					user.getParty().add(9);
-					npcImg(lblNpcImg);
-				}
-				if (snChoice == 7) {
-					storyArea.setText(getAchoice(24).getStoryMain());
+				if (getAstory(sn).getStoryNum().equals("3-2")) {
+					repeatChoice(1);
+
+				} else {
+					choiceText(snChoice);
+					storyUpdate(2);
+					if (snChoice == 2) {
+//						itemconsole.getItem(7); // 법전 얻기
+//						user.getParty().add(5);
+//						npcImg(lblNpcImg);
+//						System.out.println(user.getInventory());
+					} else if (snChoice == 4) {
+						user.HPRefresh("down", 10);
+						System.out.println("배드엔딩 넣기");
+					} else if (snChoice == 8) {
+						user.mentalRefresh("up", 1); // 쿠키 얻기
+						itemconsole.itemRemove(10);
+						user.getParty().add(9);
+						npcImg(lblNpcImg);
+					}
+					if (snChoice == 7) {
+						storyArea.setText(getAchoice(24).getStoryMain());
+
+					}
+					snChoice++;
+					path.add('2');
+					storyArea.setCaretPosition(0); // (아니야! 뭔가 이상해...) 선택지 선택
+					userInven();
+					hpmp();
 
 				}
-				snChoice++;
-				path.add('2');
-				storyArea.setCaretPosition(0); // (아니야! 뭔가 이상해...) 선택지 선택
-				userInven();
-				hpmp();
 			}
 		});
 
@@ -684,19 +763,23 @@ public class StoryPnl extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				choiceText(snChoice);
-				storyUpdate(3);
-				if (snChoice == 0) {
-					user.mentalRefresh("down", 1);
-				} else if (snChoice == 4) {
-					itemconsole.getItem(9);
-				} else if (snChoice == 5) {
-					user.HPRefresh("down", 1);
+				if (getAstory(sn).getStoryNum().equals("3-2")) {
+					repeatChoice(2);
+				} else {
+					choiceText(snChoice);
+					storyUpdate(3);
+					if (snChoice == 0) {
+						user.mentalRefresh("down", 1);
+					} else if (snChoice == 4) {
+						itemconsole.getItem(9);
+					} else if (snChoice == 5) {
+						user.HPRefresh("down", 1);
+					}
+					snChoice++;
+					path.add('3');
+					userInven();
+					hpmp();
 				}
-				snChoice++;
-				path.add('3');
-				userInven();
-				hpmp();
 			}
 		});
 
@@ -708,25 +791,31 @@ public class StoryPnl extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				choiceText(snChoice);
-				storyUpdate(4);
-				if (snChoice == 0) {
-					user.mentalRefresh("up", 1);
-					itemconsole.getItem(16);
-				} else if (snChoice == 2) {
-					itemconsole.getItem(2); // 고모리 얻기
-					user.getParty().add(7);
-					npcImg(lblNpcImg);
-					System.out.println(user.getInventory());
-				} else if (snChoice == 5) {
-					user.mentalRefresh("down", 10);
-					System.out.println("배드엔딩 넣기");
+				if (getAstory(sn).getStoryNum().equals("3-2")) {
+					repeatChoice(3);
+				} else {
+
+					choiceText(snChoice);
+					storyUpdate(4);
+					if (snChoice == 0) {
+						user.mentalRefresh("up", 1);
+						itemconsole.getItem(16);
+//					} else if (snChoice == 2) {
+//						itemconsole.getItem(2); // 고모리 얻기
+//						user.getParty().add(7);
+//						npcImg(lblNpcImg);
+//						System.out.println(user.getInventory());
+					} else if (snChoice == 5) {
+						user.mentalRefresh("down", 10);
+						System.out.println("배드엔딩 넣기");
+					}
+
+					snChoice++;
+					path.add('4');
+					userInven();
+					hpmp();
 				}
 
-				snChoice++;
-				path.add('4');
-				userInven();
-				hpmp();
 			}
 		});
 
@@ -738,12 +827,16 @@ public class StoryPnl extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				choiceText(snChoice);
-				storyUpdate(5);
-				snChoice++;
-				path.add('5');
-				userInven();
-				hpmp();
+				if (getAstory(sn).getStoryNum().equals("3-2")) {
+					repeatChoice(4);
+				} else {
+					choiceText(snChoice);
+					storyUpdate(5);
+					snChoice++;
+					path.add('5');
+					userInven();
+					hpmp();
+				}
 			}
 		});
 
@@ -761,24 +854,51 @@ public class StoryPnl extends JFrame {
 		pnlBBG.add(mpwhat);
 
 		JButton bulletinBtn = new JButton("후기게시판");
-		bulletinBtn.setBounds(853, 10, 97, 23);
+		bulletinBtn.setBounds(853, 10, 105, 30);
+		bulletinBtn.setBackground(Color.gray);
 		pnlBBG.add(bulletinBtn);
-
+		
 		bulletinBtn.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Bulletin(loguser).setVisible(true);
 			}
 		});
-
+		
 		JButton upjuck = new JButton("업적보기");
-		upjuck.setBounds(963, 10, 97, 23);
+		upjuck.setBounds(963, 10, 105, 30);
+		upjuck.setBackground(Color.gray);
 		pnlBBG.add(upjuck);
+		
+		upjuck.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new AchvPnl(loguser).setVisible(true);
+			}
+		});
 
 		JButton logout = new JButton("로그아웃");
-		logout.setBounds(1073, 10, 97, 23);
+		logout.setBounds(1073, 10, 105, 30);
+		logout.setBackground(Color.gray);
 		pnlBBG.add(logout);
+		
+		
+		JButton next = new JButton("다음챕터");
+		next.setBounds(963, 780, 120, 40);
+		next.setFont(new Font("맑은고딕", Font.BOLD, 20));
+		pnlBBG.add(next);
+		
+		next.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new StoryPnl2(user, loguser).setVisible(true); // 다음 프레임에 생성자에 유저를 받을수있게 만든후 실행
+				StoryPnl.this.setVisible(false);
+				
+			}
+		});
 
 		JLabel backlbl = new JLabel();
 		backlbl.setBounds(0, 0, 1200, 870);
@@ -819,8 +939,8 @@ public class StoryPnl extends JFrame {
 
 	}
 
-	public static void main(String[] args) {
-		new StoryPnl(new BusanUser("magic22x", "1111")).setVisible(true);
-		;
-	}
+//	public static void main(String[] args) {
+//		new StoryPnl(new BusanUser("magic22x", "1111")).setVisible(true);
+//		;
+//	}
 }

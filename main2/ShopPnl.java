@@ -120,6 +120,14 @@ public class ShopPnl extends JPanel{
 				outTradeBtn.setEnabled(true);
 				count1 = 0;
 				count2 = 0;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+				StoryPnl2.getDateBtn().setText(user.getDate() + "일");
+				StoryPnl2.getItemConsole().eatRcv();
+				StoryPnl2.userInven();
+				StoryPnl2.hpmp();
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+				
+				
 			}
 		});
         

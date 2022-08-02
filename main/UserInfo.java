@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
  //추가할것 맘대로 넣으셈요
 public class UserInfo {
-	final int FULL_HP = 5; 
-	final int FULL_MENTAL = 5; 
+	public static final int FULL_HP = 5; 
+	public static final int FULL_MENTAL = 5; 
 	private int hp = 5;
 	private int mental = 5;
 	private int bleed = 3;
@@ -14,7 +14,16 @@ public class UserInfo {
 	private int buy = 0;
 	private int sleep = 0;
 	private int date = 1;
+	private String userid;
+	
 	private List<Integer> party = new ArrayList<>();
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
 	private int npc_likability;
 	private List<Item> inventory = new ArrayList<>();
 	//item_id에 따라서 durability, count를 개별로 관리할 수 있게 정보 처리 -> 저장필요한 정보 inventory: list<Item>

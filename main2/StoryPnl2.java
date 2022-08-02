@@ -38,6 +38,7 @@ import main.NpcDao;
 import main.Story;
 import main.StoryPnl;
 import main.UserInfo;
+import statistics.AchvPnl;
 
 public class StoryPnl2 extends JFrame {
 	private BusanUser loguser;
@@ -67,7 +68,9 @@ public class StoryPnl2 extends JFrame {
 	private ImageIcon fullmp = new ImageIcon(mp);
 	private URL bg = Login.class.getClassLoader().getResource("first.jpg");
 	private ImageIcon back = new ImageIcon(bg);
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+	private JButton dateBtn;
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
 	
 	private JLabel[] hplbl = { new JLabel(), new JLabel(), new JLabel(), new JLabel(), new JLabel() };
 	private JLabel[] mplbl = { new JLabel(), new JLabel(), new JLabel(), new JLabel(), new JLabel() };
@@ -79,7 +82,17 @@ public class StoryPnl2 extends JFrame {
 	private List<JLabel> userInven = new ArrayList<>();
 	private List<JLabel> userInvenCount = new ArrayList<>();
 	
-	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+	public JButton getDateBtn() {
+		return dateBtn;
+	}
+	public List<JLabel> getUserInven() {
+		return userInven;
+	}
+	public List<JLabel> getUserInvenCount() {
+		return userInvenCount;
+	}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
 	public ItemConsole getItemConsole() {
 		return this.itemconsole;
 	}
@@ -200,38 +213,7 @@ public class StoryPnl2 extends JFrame {
 		return choiceList.get(a);
 	}
 
-		
-	// DB에서 chapter1 테이블 리스트에 담기
-	private Story getAstory(int selecRow) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 
-		list = new ArrayList<>();
-
-		try {
-
-			conn = BusanUtil.getConnection();
-			pstmt = conn.prepareStatement("SELECT * FROM busan.chapter1_storyonly");
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				Story str = new Story(rs.getInt("storyId"), rs.getString("storyNum"), rs.getString("storyMain"),
-						rs.getInt("storyTime"), rs.getString("check"));
-
-				list.add(str);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			BusanUtil.closeRS(rs);
-			BusanUtil.closeStmt(pstmt);
-			BusanUtil.closeConn(conn);
-		}
-		return list.get(selecRow);
-	}
-	
 
 	public void npcImg(List<JLabel> lblNpcImg) {
 		List<Integer> npcParty = user.getParty();
@@ -290,10 +272,16 @@ public class StoryPnl2 extends JFrame {
 	}
 	
 
-	public StoryPnl2(BusanUser loguser) {
+	public StoryPnl2(UserInfo user , BusanUser loguser) {
 		super("부산2044");
+		this.user = user;
 		this.loguser = loguser;
+		
+		
+
+		System.out.println(user.getInventory().toString());
 		// 인벤토리 예시
+		System.out.println(user.getParty());
 	
 		
 		// 제일 큰 패널
@@ -305,6 +293,12 @@ public class StoryPnl2 extends JFrame {
 		pnlTxt.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnlTxt.setPreferredSize(new Dimension(800, 700));
 		pnlTxt.setLayout(null);
+		
+//		JPanel pnlTxt2 = new Chapter2_ScreenDESU(user, StoryPnl2.this);
+//		pnlTxt.setBounds(12, 10, 824, 851);
+//		pnlTxt.setBorder(new LineBorder(new Color(0, 0, 0)));
+//		pnlTxt.setPreferredSize(new Dimension(800, 700));
+//		pnlTxt.setLayout(null);
 				
 		
 		JPanel pnl_userInven = new JPanel();
@@ -380,9 +374,9 @@ public class StoryPnl2 extends JFrame {
 		userInven.get(19).setBounds(228, 360, 76, 90);
 
 		// 기본지급 아이템들~~~~~!!!!!!
-		user.setInventory(
-				new ArrayList<Item>(Arrays.asList(new Item(3, 9999, 1), new Item(19, 0, 2), new Item(10, 0, 3))));
-		userInven(); // 이 메소드는 항상 써줘야 inventory List<Item>이 이미ㅈ화 된다
+//		user.setInventory(
+//				new ArrayList<Item>(Arrays.asList(new Item(3, 9999, 1), new Item(19, 0, 2), new Item(10, 0, 3))));
+//		userInven(); // 이 메소드는 항상 써줘야 inventory List<Item>이 이미ㅈ화 된다
 
 //		ToolTipManager m = ToolTipManager.sharedInstance();
 //		m.setInitialDelay(0);
@@ -392,8 +386,8 @@ public class StoryPnl2 extends JFrame {
 		
 		
 		
-		List<Integer> party = new ArrayList<>(Arrays.asList(2));
-	    user.setParty(party);
+//		List<Integer> party = new ArrayList<>(Arrays.asList(2));
+//	    user.setParty(party);
 		
 		
 		JPanel npcPnl = new JPanel();
@@ -436,6 +430,10 @@ public class StoryPnl2 extends JFrame {
 			bound2 += 50;
 		}
 		hpmp();
+//		for (int i = 0; i < user.getInventory().size(); i++) {
+//			user.setInventory(new ArrayList<Item>(Arrays.asList(user.getInventory().get(i))));			
+//		}
+	
 // --------------------------------------------
 
 
@@ -475,12 +473,27 @@ public class StoryPnl2 extends JFrame {
 		upjuck.setBounds(963, 10, 105, 30);
 		upjuck.setBackground(Color.gray);
 		pnlBBG.add(upjuck);
+		
+		upjuck.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new AchvPnl(loguser).setVisible(true);
+			}
+		});
 
 		JButton logout = new JButton("로그아웃");
 		logout.setBounds(1073, 10, 105, 30);
 		logout.setBackground(Color.gray);
 		pnlBBG.add(logout);
 		
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+		dateBtn = new JButton("1일차");
+		dateBtn.setBounds(960, 780, 105, 27);
+		pnlBBG.add(dateBtn);
+		dateBtn.setEnabled(false);
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+
 		JLabel backlbl = new JLabel();
 		backlbl.setBounds(0, 0, 1200, 870);
 		pnlBBG.add(backlbl);
@@ -499,7 +512,8 @@ public class StoryPnl2 extends JFrame {
 			}
 		});
 		
-        
+		userInven();
+		npcImg(lblNpcImg);
 		setSize(1200, 900);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

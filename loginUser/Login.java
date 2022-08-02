@@ -112,6 +112,7 @@ public class Login extends JFrame {
 
 				if (list.contains(user)) {
 					user = list.get(list.indexOf(user));
+					System.out.println(user.toString());
 					Login.this.setVisible(false);
 					new StoryPnl(user).setVisible(true);
 					// 다음 프레임에 유저 정보를 전달
@@ -210,7 +211,7 @@ public class Login extends JFrame {
 
 				if (list.contains(user)) { // 리스트안에 유저의 아이디가 있으면
 					user = list.get(list.indexOf(user)); // 그 아이디가 있는 인덱스번호를 알아낸후 그 안에 모든 정보를 유저에 저장
-					new StoryPnl2(user).setVisible(true); // 다음 프레임에 생성자에 유저를 받을수있게 만든후 실행
+					new StoryPnl(user).setVisible(true); // 다음 프레임에 생성자에 유저를 받을수있게 만든후 실행
 					Login.this.setVisible(false);
 					// 다음 프레임에 유저 정보를 전달
 					// Frame a = new Frame(user);
@@ -257,15 +258,15 @@ public class Login extends JFrame {
 
 	}
 
-	public static void main(String[] args) {
-
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Exception e) {
-			
-		}
-		Login l = new Login();
-		l.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//
+//		try {
+//			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+//		} catch (Exception e) {
+//			
+//		}
+//		Login l = new Login();
+//		l.setVisible(true);
+//	}
 
 }

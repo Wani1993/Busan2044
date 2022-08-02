@@ -5,29 +5,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
-import bulletin.Bulletin;
+import BattlePKG.Battle_Algo;
+import BattlePKG.Battle_App;
+import BattlePKG.Enemy;
+import BattlePKG.Enemy_Dao;
 import main.UserInfo;
 
-public class Chapter2 extends JPanel {
+public class Chapter2_Screen extends JFrame {
 	public JPanel pnlTxt2;
-
 	private JPanel choicePnl;
 	private JPanel startPnl;
+	private JPanel battlePnl;
 
 	private JButton[] btnChoice = new JButton[4];
 	private JButton rest;
@@ -35,73 +35,32 @@ public class Chapter2 extends JPanel {
 	private JButton search;
 
 	private JScrollPane jsp2;
-
 	private JTextArea textArea;
 
-	private JPanel battleBattle;
-
-	public UserInfo user;
-
-	private URL morningImg = Bulletin.class.getClassLoader().getResource("bg1.png");
-	private URL afternoonImg = Bulletin.class.getClassLoader().getResource("bg2.png");
-	private URL nightImg = Bulletin.class.getClassLoader().getResource("bg3.png");
-	private ImageIcon morning = new ImageIcon(morningImg);
-	private ImageIcon afternoon = new ImageIcon(afternoonImg);
-	private ImageIcon night = new ImageIcon(nightImg);
-	private JLabel dayImg;
+	public UserInfo user = new UserInfo();
+	String id;
 
 	// 다음 화면으로 넘길 때 필요한 int
 	private int ok = 0;
 
-	
-
-	public JButton getShop() {
-		return shop;
-	}
-
-	public void setShop(JButton shop) {
-		this.shop = shop;
-	}
-
-	public URL getMorningImg() {
-		return morningImg;
-	}
-
-	public void setMorningImg(URL morningImg) {
-		this.morningImg = morningImg;
-	}
-
-	public ImageIcon getMorning() {
-		return morning;
-	}
-
-	public void setMorning(ImageIcon morning) {
-		this.morning = morning;
-	}
-
-	public JLabel getDayImg() {
-		return dayImg;
-	}
-
-	public void setDayImg(JLabel dayImg) {
-		this.dayImg = dayImg;
-	}
-
-	public JPanel getStartPnl() {
-		return startPnl;
-	}
 // ------------------------------------------------------------------------ //		
 	// 전투 닫는 버튼 액션리스너입니다
 	// TODO
-//	ActionListener btEnd = new ActionListener() {
-//		Battle_App a = new Battle_App();
-//
-//		@Override
-//		public void actionPerformed(ActionEvent e) {
-//			user = a.getBtEndUserStatus();
-//			/////// TODO 탐색화면으로 돌아가기
-//		}
-//	};
+	ActionListener btEnd = new ActionListener() {
+		Battle_App a = new Battle_App();
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			user = a.getBtEndUserStatus();
+			/////// TODO 탐색화면으로 돌아가기
+//			choicePnl.setVisible(false);
+			pnlTxt2.setVisible(true); //pnlTxt2말고 jsp2로 만지세염
+			jsp2.setVisible(false);
+			battlePnl.setVisible(false);
+			startPnl.setVisible(true);
+		}
+	};
 
 // ------------------------------------------------------------------------ //	
 	// ev10 밤 이벤트(41, 42, 43) 배열로 받아서 조건걸기
@@ -582,34 +541,31 @@ public class Chapter2 extends JPanel {
 				public void mousePressed(MouseEvent e) {
 					startPnl.setVisible(true);
 					jsp2.setVisible(false);
-
+					choicePnl.setVisible(false);
 				}
 			});
 		}
-
 	}
 
 // ------------------------------------------------------------------------ //	
-	public Chapter2(UserInfo user, StoryPnl2 StoryPnl2) {
+	public Chapter2_Screen(String idid) {
+
 		// 오타나있어서 고쳤움
-		this.user = user;
+		super("Chapter2");
+
 		// 인하 ---- 필요한 값 필드로 뺐음!!!
-//		Battle_Algo ba = new Battle_Algo();
-//		user = ba.setUserData();
-//		Enemy_Dao ed = new Enemy_Dao();
+		Battle_Algo ba = new Battle_Algo();
+		user = ba.setUserData();
+		Enemy_Dao ed = new Enemy_Dao();
+		id = idid;
 		//////////////////////////////////////
 
 		pnlTxt2 = new JPanel();
-		pnlTxt2.setBounds(0, 0, 824, 841); // 크기를 정해줘야 다른 class에서 사용 가능
+		pnlTxt2.setBounds(12, 10, 824, 841); // 크기를 정해줘야 다른 class에서 사용 가능
 		pnlTxt2.setBorder(new LineBorder(new Color(0, 0, 0)));
 
-		dayImg = new JLabel();
-		dayImg.setBounds(10, 12, 830, 90);
-		dayImg.setIcon(morning);
-		pnlTxt2.add(dayImg);
-
 		jsp2 = new JScrollPane();
-		jsp2.setBounds(12, 100, 800, 480);
+		jsp2.setBounds(12, 10, 800, 569);
 		pnlTxt2.add(jsp2);
 
 		textArea = new JTextArea();
@@ -633,27 +589,26 @@ public class Chapter2 extends JPanel {
 		}
 //		선택지 끝
 
-		add(pnlTxt2);
+		getContentPane().add(pnlTxt2);
 		pnlTxt2.setLayout(null);
 
 		startPnl = new JPanel();
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
-		startPnl.setBounds(270, 300, 383, 374);
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+		startPnl.setBounds(413, 76, 383, 374);
 		pnlTxt2.add(startPnl);
 		startPnl.setLayout(null);
 
-//		// 효정이꺼 넣기
-//		ShopPnl sp = new ShopPnl(user, StoryPnl2);
-//		pnlTxt2.add(sp);
-//		sp.setVisible(false);
-
 		search = new JButton("탐색");
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
-		search.setBounds(0, 0, 300, 64);
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+		search.setBounds(44, 82, 300, 64);
 		startPnl.add(search);
-
+		
+		List<Integer> eventHome = new ArrayList<Integer>();
+		eventHome.add(0);
+		eventHome.add(1);
+		eventHome.add(2);
+		eventHome.add(3);
+		eventHome.add(4);
+		eventHome.add(5);
+		
 		// 다시 스타트패널 뜨게 하는게 좀...
 		search.addActionListener(new ActionListener() {
 			@Override
@@ -668,26 +623,27 @@ public class Chapter2 extends JPanel {
 				int prob = random.nextInt(100) + 1; // 이거는 확률
 				System.out.println("확률입니당 : " + prob);
 
-				List<Integer> eventHome = new ArrayList<Integer>();
-				eventHome.add(0);
-				eventHome.add(1);
-				eventHome.add(2);
-				eventHome.add(3);
-				eventHome.add(4);
-				eventHome.add(5);
+//				List<Integer> eventHome = new ArrayList<Integer>();
+//				eventHome.add(0);
+//				eventHome.add(1);
+//				eventHome.add(2);
+//				eventHome.add(3);
+//				eventHome.add(4);
+//				eventHome.add(5);
 
 				System.out.println("배열을 출력해봅니당 : " + eventHome);
 
 				int evOut = random.nextInt(6); // 이벤트 갯수
 				System.out.println("랜덤으로 나온 숫자입니당 :  " + evOut);
+				boolean check = true;
 
-				if (prob >= 20) {
+				if (prob <= 100) {
 					System.out.println("확률입니다. :" + prob);
 
 					eventHome.get(evOut);
 					System.out.println("eventHome.get한거 : " + eventHome.get(evOut));
 
-					// 이벤트
+					// 이벤트 TODO
 					if (evOut == 0) {
 						GmEvNight();
 						System.out.println("evout 0");
@@ -696,19 +652,20 @@ public class Chapter2 extends JPanel {
 //						checkEnd(true);
 
 						if (GmEvNight() == null) {
-							// 전투로간다!!
-							// TODO
+//							// 전투로간다!!
+//							// TODO
 //							System.out.println("전투다!!!");
 //
-//							Battle_Algo ba = new Battle_Algo();
-//							Enemy_Dao ed = new Enemy_Dao();
-//							Enemy enemy = ed.selectRandomEnemy(1);
-//
-//							Battle_App bt = new Battle_App(enemy, user);
-//							add(bt.getPnl());
+//							Enemy enemy = ed.selectRandomEnemy(2);
+//							Battle_App bt = new Battle_App();
+//							bt.setPnl(enemy, user, id);
+//							battlePnl = bt.getPnl();
+//							add(battlePnl);
 //							textArea.setVisible(false);
 //							pnlTxt2.setVisible(false);
-
+//
+//							JButton btn = bt.getEndBtn();
+//							btn.addActionListener(btEnd);
 						}
 
 					}
@@ -716,26 +673,24 @@ public class Chapter2 extends JPanel {
 					if (evOut == 1) {
 						nightEv12();
 						System.out.println("evout 1");
-						eventHome.remove(1);
-					} else if (eventHome.get(evOut) == null) {
-						System.out.println("한 번 나왔던 이벤트라 전투입니당!");
-					}
+//						eventHome.remove(1);
+						
+						System.out.println(eventHome);
+					} 
 
 					if (evOut == 2) {
 						nigntEv14();
 						System.out.println("evout 2");
-						eventHome.remove(2);
-					} else if (eventHome.get(evOut) == null) {
-						System.out.println("한 번 나왔던 이벤트라 전투입니당!");
-					}
+//						eventHome.remove(2);
+						System.out.println(eventHome);
+					} 
 
 					if (evOut == 3) {
 						nigntEv15();
 						System.out.println("evout 3");
-						eventHome.remove(3);
-					} else if (eventHome.get(evOut) == null) {
-						System.out.println("한 번 나왔던 이벤트라 전투입니당!");
-					}
+//						eventHome.remove(3);
+						System.out.println(eventHome);
+					} 
 
 					if (evOut == 4) {
 						System.out.println("evout 4");
@@ -744,121 +699,40 @@ public class Chapter2 extends JPanel {
 						try {
 							if (p.getBoolean("id", "10") || p.getBoolean("id", "9")) {
 								nigntEv10();
-							} else {
-								// 전투로 간다!!
-								System.out.println("전투!");
 							}
 						} catch (SQLException e1) {
 							e1.printStackTrace();
 						}
 
-					} else if (eventHome.get(evOut) == null) {
-						System.out.println("한 번 나왔던 이벤트라 전투입니당!");
-					}
+					} 
 
 					if (evOut == 5) {
 						GmEvDay();
 						System.out.println("evout 5");
-						eventHome.remove(5);
+//						eventHome.remove(5);
 					}
 
-					if (user.getDate() < 5) {
-						user.findplus();
-						if (user.getFind() == 1) {
-							dayImg.setIcon(afternoon);
-						} else if (user.getFind() == 2) {
-							dayImg.setIcon(night);
-						} else if (user.getFind() == 3) {
-							dayImg.setIcon(morning);
-							user.setFind(0);
-							user.dateplus();
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
-							StoryPnl2.getDateBtn().setText(user.getDate() + "일");
-							StoryPnl2.getItemConsole().eatRcv();
-							StoryPnl2.userInven();
-							StoryPnl2.hpmp();
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
-						}
-						System.out.println(user.getDate() + "일이다");
-					} else {
-						System.out.println("게임끝");
-					}
-
-				} else {
-					// 전투
-					// TODO
-				}
-
-				// GmDay 하나만 남음!!!!
-//				GmEvDay();
-				if (user.getFind() == 2) {
-					shop.setEnabled(true);
-				} else {
-					shop.setEnabled(false);
-				}
+				} 
 
 			}
 		});
 
-		ShopPnl sp = new ShopPnl(user, StoryPnl2, Chapter2.this);
-		pnlTxt2.add(sp);
-		sp.setVisible(false);
-		
 		shop = new JButton("상점");
-		shop.setEnabled(false);
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
-		shop.setBounds(0, 80, 300, 64);
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+		shop.setBounds(44, 156, 300, 64);
 		startPnl.add(shop);
-		shop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				startPnl.setVisible(false); // 이게 탐색 상점 휴식 버튼 있는 애임
-				
-				jsp2.setVisible(false); // textArea에 스크롤패인 단거
-				textArea.setEditable(false); // text부분
-				choicePnl.setVisible(false); // 선택지부분
-				
-				sp.setVisible(true);
-			}
-
-		});
 
 		rest = new JButton("휴식");
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
-		rest.setBounds(0, 160, 300, 64);
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
+		rest.setBounds(44, 230, 300, 64);
 		startPnl.add(rest);
 
-		rest.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (user.getDate() < 5) {
-					user.sleepplus();
-					if (user.getSleep() == 1) {
-						dayImg.setIcon(morning);
-						user.setSleep(0);
-						user.setFind(0);
-						user.dateplus();
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
-						StoryPnl2.getDateBtn().setText(user.getDate() + "일");
-						StoryPnl2.getItemConsole().eatRcv();
-						StoryPnl2.userInven();
-						StoryPnl2.hpmp();
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
-					}
-				} else {
-					System.out.println("게임끝");
-				}
-			}
-		});
-
 		setSize(830, 870);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 
 	}
 
 	public static void main(String[] args) {
-//		new Chapter2_Screen().setVisible(true);
+		new Chapter2_Screen("magic2xx").setVisible(true);
 
 	}
 }

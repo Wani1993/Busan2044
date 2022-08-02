@@ -449,83 +449,20 @@ public class ItemConsole {
 		}
 	}
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
 	// 파티 인원수를 파라미터로 받아서 낮은 레어도 rcv부터 소비하기
 	public void eatRcv() {
 		int partyNum = user.getParty().size() + 1; // 파티원 + 1(나)
 		List<Item> inven = user.getInventory();
 		int eatCount = 0;
+		List<Integer> deleteMemo = new ArrayList<>();
 		for (int i = 0; i < inven.size(); i++) {
 			if (inven.get(i).getItem_id() == 10) { // 건빵
 				int needCount = (partyNum - eatCount);
 				int count = inven.get(i).getItem_count();
 				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
-					user.getInventory().remove(i);
-					eatCount += count;
-				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
-					count -= needCount;
-					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
-					eatCount += needCount;
-				}
-			} else if (inven.get(i).getItem_id() == 13) { // 생수
-				int needCount = (partyNum - eatCount);
-				int count = inven.get(i).getItem_count();
-				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
-					user.getInventory().remove(i);
-					eatCount += count;
-				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
-					count -= needCount;
-					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
-					eatCount += needCount;
-				}
-			} else if (inven.get(i).getItem_id() == 9) { // 육포
-				int needCount = (partyNum - eatCount);
-				int count = inven.get(i).getItem_count();
-				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
-					user.getInventory().remove(i);
-					eatCount += count;
-				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
-					count -= needCount;
-					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
-					eatCount += needCount;
-				}
-			} else if (inven.get(i).getItem_id() == 11) { // 박카스
-				int needCount = (partyNum - eatCount);
-				int count = inven.get(i).getItem_count();
-				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
-					user.getInventory().remove(i);
-					eatCount += count;
-				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
-					count -= needCount;
-					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
-					eatCount += needCount;
-				}
-			} else if (inven.get(i).getItem_id() == 23) { // 약과
-				int needCount = (partyNum - eatCount);
-				int count = inven.get(i).getItem_count();
-				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
-					user.getInventory().remove(i);
-					eatCount += count;
-				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
-					count -= needCount;
-					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
-					eatCount += needCount;
-				}
-			} else if (inven.get(i).getItem_id() == 14) { // 통조림
-				int needCount = (partyNum - eatCount);
-				int count = inven.get(i).getItem_count();
-				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
-					user.getInventory().remove(i);
-					eatCount += count;
-				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
-					count -= needCount;
-					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
-					eatCount += needCount;
-				}
-			} else if (inven.get(i).getItem_id() == 15) { // 커피가루
-				int needCount = (partyNum - eatCount);
-				int count = inven.get(i).getItem_count();
-				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
-					user.getInventory().remove(i);
+					deleteMemo.add(i);
+//					user.getInventory().remove(i);
 					eatCount += count;
 				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
 					count -= needCount;
@@ -533,12 +470,117 @@ public class ItemConsole {
 					eatCount += needCount;
 				}
 			}
-
+			if (inven.get(i).getItem_id() == 13) { // 생수
+				int needCount = (partyNum - eatCount);
+				int count = inven.get(i).getItem_count();
+				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
+					deleteMemo.add(i);
+//					user.getInventory().remove(i);
+					eatCount += count;
+				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
+					count -= needCount;
+					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
+					eatCount += needCount;
+				}
+			}
+			if (inven.get(i).getItem_id() == 9) { // 육포
+				int needCount = (partyNum - eatCount);
+				int count = inven.get(i).getItem_count();
+				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
+					deleteMemo.add(i);
+//					user.getInventory().remove(i);
+					eatCount += count;
+				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
+					count -= needCount;
+					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
+					eatCount += needCount;
+				}
+			}
+			if (inven.get(i).getItem_id() == 11) { // 박카스
+				int needCount = (partyNum - eatCount);
+				int count = inven.get(i).getItem_count();
+				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
+					deleteMemo.add(i);
+//					user.getInventory().remove(i);
+					eatCount += count;
+				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
+					count -= needCount;
+					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
+					eatCount += needCount;
+				}
+			}
+			if (inven.get(i).getItem_id() == 23) { // 약과
+				int needCount = (partyNum - eatCount);
+				int count = inven.get(i).getItem_count();
+				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
+					deleteMemo.add(i);
+//					user.getInventory().remove(i);
+					eatCount += count;
+				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
+					count -= needCount;
+					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
+					eatCount += needCount;
+				}
+			}
+			if (inven.get(i).getItem_id() == 14) { // 통조림
+				int needCount = (partyNum - eatCount);
+				int count = inven.get(i).getItem_count();
+				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
+					deleteMemo.add(i);
+//					user.getInventory().remove(i);
+					eatCount += count;
+				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
+					count -= needCount;
+					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
+					eatCount += needCount;
+				}
+			}
+			if (inven.get(i).getItem_id() == 15) { // 커피가루
+				int needCount = (partyNum - eatCount);
+				int count = inven.get(i).getItem_count();
+				if (needCount >= count) { // 필요량이 현재 가지고 있는 개수 보다 많거나 같다면 모두 사용
+					deleteMemo.add(i);
+//					user.getInventory().remove(i);
+					eatCount += count;
+				} else if (needCount > 0 && needCount < count) { // 필요량이 현재 가지고 있는 개수 보다 적다면 필요한 만큼만 사용
+					count -= needCount;
+					inven.get(i).setItem_count(count); // 쓰고 남은 량으로 개수 수정
+					eatCount += needCount;
+				}
+			}
 		}
+		// 지울애들 담아 놨던거 여기서 찐으로 지움
+		if (deleteMemo.size() != 0) {
+			for (int i = 0; i < deleteMemo.size(); i++) {
+				Item delete = inven.get(deleteMemo.get(i));
+				user.getInventory().remove(delete);
+			}
+		} 
 		if (partyNum > eatCount) {
 			user.setHp(user.getHp() - 1);
 			user.setMental(user.getMental() - 1);
 		}
 	}
+	
+	  public boolean wpnUseDown(int item_id) { //true면 파괴 
+	      boolean destroy = false;
+	      List<Item> inventory = user.getInventory();
+	      int index = -1;
+	      for (int i = 0; i < inventory.size(); i++) {
+	         if (inventory.get(i).getItem_id() == item_id) {
+	            index = i;
+	         }
+	      }
+	      int count = inventory.get(index).getItem_durability();
+	      count--;
+	      if (count == 0) {
+	         inventory.remove(index);
+	         destroy = true;
+	      } else {
+	         inventory.get(index).setItem_durability(count);
+	      }
+	      return destroy;
+	   }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~민트초코 개싫어
 
 }

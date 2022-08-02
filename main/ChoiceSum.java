@@ -1,9 +1,14 @@
 package main;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class ChoiceSum {
-	private int choiceId;
-	private String storyNum, choiceMain, StoryMain;
+	private int choiceId, storyId;
+	private String storyNum, choiceMain, storyMain;
 	private String storyCheck, choiceCheck;
+
+	private String choiceNum; // chapter2에서 사용
 
 	public ChoiceSum(int choiceId, String storyNum, String choiceMain, String storyMain, String storyCheck,
 			String choiceCheck) {
@@ -11,9 +16,23 @@ public class ChoiceSum {
 		this.choiceId = choiceId;
 		this.storyNum = storyNum;
 		this.choiceMain = choiceMain;
-		StoryMain = storyMain;
+		this.storyMain = storyMain;
 		this.storyCheck = storyCheck;
 		this.choiceCheck = choiceCheck;
+	}
+
+	public ChoiceSum(int storyId, String storyNum, String choiceMain, String storyMain) {
+		super();
+		this.storyId = storyId;
+		this.storyNum = storyNum;
+		this.choiceMain = choiceMain;
+		this.storyMain = storyMain;
+	}
+
+	public ChoiceSum(int choiceId, String choiceNum, String choiceMain) {
+		this.choiceId = choiceId;
+		this.choiceNum = choiceNum;
+		this.choiceMain = choiceMain;
 	}
 
 	public int getChoiceId() {
@@ -22,6 +41,14 @@ public class ChoiceSum {
 
 	public void setChoiceId(int choiceId) {
 		this.choiceId = choiceId;
+	}
+
+	public int getStoryId() {
+		return storyId;
+	}
+
+	public void setStoryId(int storyId) {
+		this.storyId = storyId;
 	}
 
 	public String getStoryNum() {
@@ -41,11 +68,11 @@ public class ChoiceSum {
 	}
 
 	public String getStoryMain() {
-		return StoryMain;
+		return storyMain;
 	}
 
 	public void setStoryMain(String storyMain) {
-		StoryMain = storyMain;
+		this.storyMain = storyMain;
 	}
 
 	public String getStoryCheck() {
@@ -64,10 +91,23 @@ public class ChoiceSum {
 		this.choiceCheck = choiceCheck;
 	}
 
-	@Override
-	public String toString() {
-		return "ChoiceSum [choiceId=" + choiceId + ", storyNum=" + storyNum + ", choiceMain=" + choiceMain
-				+ ", StoryMain=" + StoryMain + ", storyCheck=" + storyCheck + ", choiceCheck=" + choiceCheck + "]";
+	public String getChoiceNum() {
+		return choiceNum;
 	}
 
+	public void setChoiceNum(String choiceNum) {
+		this.choiceNum = choiceNum;
+	}
+
+	@Override
+	public String toString() {
+		return "ChoiceSum [choiceId=" + choiceId + ", storyId=" + storyId + ", storyNum=" + storyNum + ", choiceMain="
+				+ choiceMain + ", storyMain=" + storyMain + ", storyCheck=" + storyCheck + ", choiceCheck="
+				+ choiceCheck + ", choiceNum=" + choiceNum + "]";
+	}
+
+	public static void main(String[] args) {
+		Random rd = new Random();
+		List<String> list = new ArrayList<>();
+	}
 }
